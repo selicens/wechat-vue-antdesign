@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Authentication from "@/views/Authentication";
+import Authentication from "@/views/Authentication"
+import Businesslicense from "@/views/Businesslicense"
 
 Vue.use(VueRouter)
 
@@ -30,6 +31,11 @@ const routes = [
       title:'认证'
     }
   },
+  {
+    path: '/businesslicense',
+    name: 'Businesslicense',
+    component: Businesslicense
+  }
 ]
 
 const router = new VueRouter({

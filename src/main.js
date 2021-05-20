@@ -8,6 +8,7 @@ import 'ant-design-vue/dist/antd.css';
 Vue.config.productionTip = false
 Vue.use(Antd)
 Vue.prototype.$axios = axios;
+Vue.prototype.api = "http://api.huaqiweb.com/jeecg-boot/faceid/1/"
 router.beforeEach((to,from,next) =>{
   if(to.meta.title){
     document.title = to.meta.title
