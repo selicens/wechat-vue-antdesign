@@ -18,7 +18,7 @@
                 </div>
             </a-upload>
             <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-                <img alt="example" style="width: 100%" :src="previewImage" />
+                <img alt="example" style="width: 100%" :src="previewImage"/>
             </a-modal>
         </div>
     </div>
@@ -59,9 +59,13 @@
                 this.fileList = fileList;
             },
             upload(f){
+                let getUuid = this.$route.query.uuid
+                let getOwnerId = this.$route.query.owner_id
+                this.userId = getUuid
+                this.ownerId = getOwnerId
                 let formData = new FormData()
                 formData.append('file', f.file)
-                this.$axios.post(this.api+this.userId+'/uploadBasicBiz',formData)
+                this.$axios.post(this.api+getOwnerId+'/'+getUuid+'/uploadBasicBiz',formData)
                     .then(res=>{
                         console.log(res)
                         if (res.data.code === 200){
@@ -72,7 +76,7 @@
                             this.$message.warning(res.data.message);
                         }if (this.$message.success){
                             console.log('成功了')
-                            this.$router.push('/authentication'+'?owner_id=1'+'&'+'uuid='+this.userId)
+                            this.$router.push('/authentication'+'?owner_id='+this.ownerId+'&'+'uuid='+this.userId)
                         }
                     })
             }
@@ -80,8 +84,6 @@
         mounted(){
             let getUuid = this.$route.query.uuid
             let getOwnerId = this.$route.query.owner_id
-            this.userId = getUuid
-            this.ownerId = getOwnerId
             console.log(getUuid,getOwnerId)
         }
     }

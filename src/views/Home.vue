@@ -35,10 +35,18 @@
 <script>
   export default {
     name: 'Home',
+    data(){
+      return{
+
+      }
+    },
     methods: {
       authentication() {
         window.location.href = 'http://api.huaqiweb.com/jeecg-boot/faceid/render/wechat_mp/1';
       }
+    },
+    mounted(){
+
     }
   }
 </script>
