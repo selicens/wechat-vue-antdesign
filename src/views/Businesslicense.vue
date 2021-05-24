@@ -1,6 +1,10 @@
 <template>
     <div class="Businesslicense">
         <header>营业执照</header>
+        <ul>
+            <li>请保持营业执照清晰无遮挡、无反光</li>
+            <li>上传的文件只用作身份验证，不作他用</li>
+        </ul>
         <div class="bl-upload">
             <a-upload
                     action="#"

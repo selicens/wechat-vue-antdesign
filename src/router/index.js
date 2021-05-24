@@ -34,7 +34,10 @@ const routes = [
   {
     path: '/businesslicense',
     name: 'Businesslicense',
-    component: Businesslicense
+    component: Businesslicense,
+    meta:{
+      title:'营业执照认证'
+    }
   }
 ]
 
