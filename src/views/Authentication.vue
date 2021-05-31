@@ -11,10 +11,11 @@
                 <a-col :span="12">
                     <div class="image-texts">
                         <div v-if="imgData.blText === true">
+                            <p>{{pageData.regno}}</p>
                             <p>{{pageData.entname}}</p>
                             <p>法人：{{pageData.frname}}</p>
-                            <p>{{pageData.regno}}</p>
-                            <a-button type="primary" shape="circle" icon="check" size="small" style="margin-left: 85%"/>
+                            <!--<a-button type="primary" shape="circle" icon="check" size="small" style="margin-left: 85%;"/>-->
+                            <button class="checkButton" style="margin-left: 85%;"><a-icon type="check"  style="color: #ffffff;display: flex;justify-content: center;align-items: center" /></button>
                         </div>
                         <div v-else>
                             <p>营业执照</p>
@@ -38,7 +39,8 @@
                             <p>{{pageData.idCard}}</p>
                             <p>{{pageData.name}}</p>
                             <p>是否法人：{{pageData.isCorp}}</p>
-                            <a-button type="primary" shape="circle" icon="check" size="small" style="margin-left: 85%"/>
+                            <!--<a-button type="primary" shape="circle" icon="check" size="small" style="margin-left: 85%"/>-->
+                            <button class="checkButton" style="margin-left: 85%;"><a-icon type="check" style="color: #ffffff;display: flex;justify-content: center;align-items: center" /></button>
                         </div>
                         <div v-else>
                             <p>身份证</p>
@@ -60,6 +62,7 @@
                         @preview="handlePreview"
                         @change="handleChange"
                         :customRequest="upload"
+                        :remove="removeData"
                 >
                     <div v-if="fileList.length < 8">
                         <a-icon type="plus"/>
@@ -160,6 +163,7 @@
                 wordList: [],
                 valueData: '',/*选择的选项*/
                 industryData: [],/*下拉列表选项数据*/
+                dataList:[]
             };
         },
         methods: {
@@ -225,6 +229,7 @@
                                 console.log('回显前：' + JSON.stringify(this.fileList))
                                 let data = res.data.result.fileArray
                                 let dataList = data.split(",")
+                                this.dataList = dataList
                                 console.log('字符串转为数组后：' + JSON.stringify(dataList))
                                 this.fileList = dataList.map((item, index) => {
                                     return {
@@ -266,7 +271,7 @@
             },
             goToId() {
                 /*
-                * 前往身份证界面
+                * 前往身份证验证界面
                 */
                 let getUuid = this.$route.query.uuid
                 let getOwnerId = this.$route.query.owner_id
@@ -289,6 +294,8 @@
                             console.log('上传后：' + this.imgArray)
                             files.onSuccess()
                             //自定义上传成功后要调用onSuccess(),不然就会一直保持上传中状态，无法显示图片的缩略图
+                        }else if (res.data.code === 500){
+                            this.$message.error(res.data.message)
                         }
                     })
                     .catch(err => {
@@ -300,26 +307,47 @@
                 * 其他文件、协议类提交审核
                 */
                 console.log('submit前：' + JSON.stringify(this.imgArray))
-                if (this.imgArray.length === 0) {
-                    this.$message.warning('其他协议、文件分类必需有照片');
-                } else {
                     let getUuid = this.$route.query.uuid
                     let getOwnerId = this.$route.query.owner_id
-                    let list = new FormData
-                    list.append('picArray', this.imgArray)
-                    this.$axios.post(this.api + getOwnerId + '/' + getUuid + '/submit', list)
-                        .then(res => {
-                            console.log(res)
-                            if (res.data.code === 200) {
-                                this.$router.go(0)
-                                this.$message.success(res.data.message)
-                            }
-                        })
-                        .catch(err => {
-                            console.log(err)
-                        })
-                }
-
+                    if (this.imgArray.length == 0){
+                        console.log('此时的datalist：',this.dataList)
+                        let list = new FormData
+                        list.append('picArray',this.dataList)
+                        this.$axios.post(this.api + getOwnerId + '/' + getUuid + '/submit', list)
+                            .then(res => {
+                                console.log(res)
+                                if (res.data.code === 200) {
+                                    this.$router.go(0)
+                                    this.$message.success(res.data.message)
+                                }else {
+                                    this.$message.error(res.data.message)
+                                }
+                            })
+                            .catch(err => {
+                                console.log(err)
+                            })
+                    }else {
+                        let list = new FormData
+                        list.append('picArray', this.imgArray)
+                        this.$axios.post(this.api + getOwnerId + '/' + getUuid + '/submit', list)
+                            .then(res => {
+                                console.log(res)
+                                if (res.data.code === 200) {
+                                    this.$router.go(0)
+                                    this.$message.success(res.data.message)
+                                }else {
+                                    this.$message.error(res.data.message)
+                                }
+                            })
+                            .catch(err => {
+                                console.log(err)
+                            })
+                    }
+            },
+            removeData(file){
+                console.log('删除了：',JSON.stringify(file));
+                console.log('此时的datalist：',this.dataList)
+                /*console.log('删除后的datalist：',this.dataList)*/
             },
             upWord(f) {
                 /*
@@ -445,6 +473,15 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    .checkButton{
+        width:24px;
+        height:24px;
+        border-radius:50%;
+        background:#67c23a;
+        padding:0;
+        border: 1px solid #67c23a;
     }
 
     /deep/ .ant-upload.ant-upload-select-picture-card {

@@ -44,8 +44,6 @@
                 previewVisible: false,
                 previewImage: '',
                 fileList: [],
-                userId:'',
-                ownerId:''
             }
         },
         methods: {
@@ -65,8 +63,6 @@
             upload(f){
                 let getUuid = this.$route.query.uuid
                 let getOwnerId = this.$route.query.owner_id
-                this.userId = getUuid
-                this.ownerId = getOwnerId
                 let formData = new FormData()
                 formData.append('file', f.file)
                 this.$axios.post(this.api+getOwnerId+'/'+getUuid+'/uploadBasicBiz',formData)
@@ -80,8 +76,11 @@
                             this.$message.warning(res.data.message);
                         }if (this.$message.success){
                             console.log('成功了')
-                            this.$router.push('/authentication'+'?owner_id='+this.ownerId+'&'+'uuid='+this.userId)
+                            this.$router.push('/authentication'+'?owner_id='+getOwnerId+'&'+'uuid='+getUuid)
                         }
+                    })
+                    .catch(err=>{
+                        console.log(err)
                     })
             }
         },
