@@ -52,7 +52,7 @@
         </a-row><!--身份证验证-->
         <a-row class="atc-box">
             <a-col :span="24" class="atc-box-link">
-                <router-link to="/">下载其他协议、文件链接</router-link>
+                <a v-on:click="goToLink">下载其他协议、文件链接</a>
             </a-col>
             <a-col :span="24">
                 <a-upload
@@ -419,6 +419,11 @@
                     .catch(err => {
                         console.log(err)
                     })
+            },
+            goToLink(){
+                let getUuid = this.$route.query.uuid
+                let getOwnerId = this.$route.query.owner_id
+                this.$router.push('/link' + '?owner_id=' + getOwnerId + '&uuid=' + getUuid)
             }
         },
         mounted() {

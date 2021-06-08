@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Authentication from "@/views/Authentication"
 import Businesslicense from "@/views/Businesslicense"
+import Link from "@/views/Link";
 
 Vue.use(VueRouter)
 
@@ -37,6 +38,14 @@ const routes = [
     component: Businesslicense,
     meta:{
       title:'营业执照认证'
+    }
+  },
+  {
+    path: '/link',
+    name: 'Link',
+    component: Link,
+    meta:{
+      title:'下载'
     }
   }
 ]
