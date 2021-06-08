@@ -37,16 +37,21 @@
     name: 'Home',
     data(){
       return{
-
+        URL:''
       }
     },
     methods: {
       authentication() {
-        window.location.href = 'http://api.huaqiweb.com/jeecg-boot/faceid/render/wechat_mp/1';
+        window.location.href = 'http://api.huaqiweb.com/jeecg-boot/faceid/render/wechat_mp/'+this.URL+'/';
+      },
+      getTeannID(){
+        let url = this.$route.query.teannid
+        this.URL = url
+        console.log(url)
       }
     },
     mounted(){
-
+      this.getTeannID()
     }
   }
 </script>
