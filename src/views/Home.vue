@@ -42,7 +42,7 @@
     },
     methods: {
       authentication() {
-        window.location.href = 'http://api.huaqiweb.com/jeecg-boot/faceid/render/wechat_mp/'+this.URL+'/';
+        window.location.href = this.hrefUrl+this.URL;
       },
       getTeannID(){
         let url = this.$route.query.teannid

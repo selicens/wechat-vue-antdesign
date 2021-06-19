@@ -9,6 +9,7 @@ Vue.config.productionTip = false
 Vue.use(Antd)
 Vue.prototype.$axios = axios;
 Vue.prototype.api = "http://api.huaqiweb.com/jeecg-boot/faceid/"
+Vue.prototype.hrefUrl = 'http://api.huaqiweb.com/jeecg-boot/faceid/render/wechat_mp/'
 router.beforeEach((to,from,next) =>{
   if(to.meta.title){
     document.title = to.meta.title

@@ -1,10 +1,18 @@
 <template>
     <div class="container">
         <a-row>
-            <a-col :span="24"><strong>协议、文件下载</strong></a-col>
-            <a-col :span="24" style="font-size: 15px;color: red">提示：手机微信无法直接下载，点击链接后会提示网络出错，可点击右上角复制链接地址发送到电脑端打开！</a-col>
+            <a-col :span="24">
+                <strong>协议、文件下载</strong>
+            </a-col>
+            <a-col :span="24" style="font-size: 15px;color: red;text-align:left">
+                <p>提示：复制链接用电脑端打开下载、打印、盖章;</p>
+            </a-col>
             <a-col :span="24" style="text-align: left;" v-for="item in linkData" :key="item">
                 <a :href="item">{{item.split('/').pop()}}</a>
+                <a-button type="link" icon="copy" v-on:click="copyBtn(item)">复制链接</a-button>
+            </a-col>
+            <a-col :span="24">
+                <a-button type="primary" block v-on:click="getURL">复制页面链接</a-button>
             </a-col>
         </a-row>
 
@@ -37,6 +45,26 @@
                     .catch(err => {
                         console.log(err);
                     })
+            },
+            copyBtn(item){
+                console.log(item);
+                let link = item
+                let input = document.createElement("input");   // 直接构建input
+                input.value = link;  // 设置内容
+                document.body.appendChild(input);    // 添加临时实例
+                input.select();   // 选择实例内容
+                document.execCommand("Copy");   // 执行复制
+                document.body.removeChild(input); // 删除临时实例
+            },
+            getURL(){
+                let url = window.location.href
+                console.log(url);
+                let input = document.createElement("input");   // 直接构建input
+                input.value = url;  // 设置内容
+                document.body.appendChild(input);    // 添加临时实例
+                input.select();   // 选择实例内容
+                document.execCommand("Copy");   // 执行复制
+                document.body.removeChild(input); // 删除临时实例
             }
         },
         mounted() {

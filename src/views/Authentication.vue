@@ -309,7 +309,7 @@
                 console.log('submit前：' + JSON.stringify(this.imgArray))
                     let getUuid = this.$route.query.uuid
                     let getOwnerId = this.$route.query.owner_id
-                    if (this.imgArray.length == 0){
+                    if (this.imgArray.length === 0){
                         console.log('此时的datalist：',this.dataList)
                         let list = new FormData
                         list.append('picArray',this.dataList)
@@ -347,7 +347,6 @@
             removeData(file){
                 console.log('删除了：',JSON.stringify(file));
                 console.log('此时的datalist：',this.dataList)
-                /*console.log('删除后的datalist：',this.dataList)*/
             },
             upWord(f) {
                 /*
@@ -367,7 +366,7 @@
                             console.log(res)
                             if (res.data.code === 200) {
                                 f.onSuccess()
-                                this.$router.go(0)
+                                /*this.$router.go(0)*/
                                 //自定义上传成功后要调用onSuccess(),不然就会一直保持上传中状态，无法显示图片的缩略图
                             } else if (res.data.code === 500) {
                                 console.log(res.data.message)
@@ -421,9 +420,9 @@
                     })
             },
             goToLink(){
-                let getUuid = this.$route.query.uuid
+                //let getUuid = this.$route.query.uuid
                 let getOwnerId = this.$route.query.owner_id
-                this.$router.push('/link' + '?owner_id=' + getOwnerId + '&uuid=' + getUuid)
+                this.$router.push('/link' + '?owner_id=' + getOwnerId)
             }
         },
         mounted() {
