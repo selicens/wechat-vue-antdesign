@@ -13,7 +13,7 @@ const routes = [
     name: 'Home',
     component: Home,
     meta:{
-      title:'登录'
+      title:'实名信息采集'
     }
   },
   {
@@ -29,7 +29,7 @@ const routes = [
     name: 'Authentication',
     component: Authentication,
     meta:{
-      title:'认证'
+      title:'实名信息采集'
     }
   },
   {

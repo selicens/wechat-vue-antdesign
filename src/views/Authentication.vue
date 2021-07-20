@@ -5,7 +5,8 @@
                 <a-col :span="12">
                     <div class="images">
                         <img :src="pageData.fileUrl" alt="" v-if="imgData.blImg === true">
-                        <img src="https://d0401.oss-cn-beijing.aliyuncs.com/zhouwei/yyzz.jpg" alt="" v-else>
+                        <!--<img src="https://d0401.oss-cn-beijing.aliyuncs.com/zhouwei/yyzz.jpg" alt="" v-else>-->
+                        <img src="../assets/yyzz.png" alt="" v-else>
                     </div>
                 </a-col>
                 <a-col :span="12">
@@ -30,7 +31,8 @@
                 <a-col :span="12">
                     <div class="images">
                         <img :src="pageData.frontImage" alt="" v-if="imgData.idImg === true">
-                        <img src="https://d0401.oss-cn-beijing.aliyuncs.com/zhouwei/idcn.jpg" alt="" v-else>
+                        <!--<img src="https://d0401.oss-cn-beijing.aliyuncs.com/zhouwei/idcn.jpg" alt="" v-else>-->
+                        <img src="../assets/sfz.png" alt="" v-else>
                     </div>
                 </a-col>
                 <a-col :span="12">
@@ -55,59 +57,63 @@
                 <a v-on:click="goToLink">下载其他协议、文件链接</a>
             </a-col>
             <a-col :span="24">
-                <a-upload
-                        action="#"
-                        list-type="picture-card"
-                        :file-list="fileList"
-                        @preview="handlePreview"
-                        @change="handleChange"
-                        :customRequest="upload"
-                        :remove="removeData"
-                >
-                    <div v-if="fileList.length < 8">
-                        <a-icon type="plus"/>
-                        <div class="ant-upload-text">
+                <a-space>
+                    <a-upload
+                            action="#"
+                            list-type="picture-card"
+                            :file-list="fileList"
+                            @preview="handlePreview"
+                            @change="handleChange"
+                            :customRequest="upload"
+                            :remove="removeData"
+                    >
+                        <div v-if="fileList.length < 8">
+                            <a-icon type="plus"/>
+                            <div class="ant-upload-text">
+                            </div>
                         </div>
-                    </div>
-                </a-upload>
-                <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-                    <img alt="example" style="width: 100%" :src="previewImage"/>
-                </a-modal>
+                    </a-upload>
+                    <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+                        <img alt="example" style="width: 100%" :src="previewImage"/>
+                    </a-modal>
+                </a-space>
             </a-col>
         </a-row><!--其他文件、协议验证-->
         <a-row class="atc-box">
             <a-col :span="24" class="atc-box-link">
-                <a-select default-value="请先选择所属行业，再上传话术文件" style="width: 310px" @change="selectChange">
+                <a-select default-value="请先选择所属行业，再上传话术文件" style="width: 100%" @change="selectChange">
                     <a-select-option v-for="item in industryData" :key="item.id" :value='item.value'>
                         {{item.text}}
                     </a-select-option>
                 </a-select>
             </a-col>
             <a-col :span="24">
-                <a-upload
-                        action="#"
-                        list-type="picture-card"
-                        :file-list="wordList"
-                        @preview="handlePreviews"
-                        @change="handleChanges"
-                        :customRequest="upWord"
-                        :remove="removeWord"
-                >
-                    <div v-if="fileList.length < 8">
-                        <a-icon type="plus"/>
-                        <div class="ant-upload-text">
+                <a-space>
+                    <a-upload
+                            action="#"
+                            list-type="picture-card"
+                            :file-list="wordList"
+                            @preview="handlePreviews"
+                            @change="handleChanges"
+                            :customRequest="upWord"
+                            :remove="removeWord"
+                    >
+                        <div v-if="fileList.length < 8">
+                            <a-icon type="plus"/>
+                            <div class="ant-upload-text">
+                            </div>
                         </div>
-                    </div>
-                </a-upload>
-                <a-modal :visible="previewVisibles" :footer="null" @cancel="handleCancel">
-                    <img alt="example" style="width: 100%" :src="previewImages"/>
-                </a-modal>
+                    </a-upload>
+                    <a-modal :visible="previewVisibles" :footer="null" @cancel="handleCancel">
+                        <img alt="example" style="width: 100%" :src="previewImages"/>
+                    </a-modal>
+                </a-space>
             </a-col>
         </a-row><!--话术类文件验证-->
         <a-row>
             <a-col :span="24">
                 <a-button type="primary" block v-on:click="submit">
-                    提交审核
+                    <p><strong>提交审核</strong></p>
                 </a-button>
             </a-col>
         </a-row><!--提交审核-->
@@ -437,7 +443,6 @@
         width: 100%;
         height: auto;
         padding: 10px;
-        background-color: #ffffff;
     }
 
     a {
@@ -445,6 +450,7 @@
     }
 
     p {
+        font-size: 8vm;
         margin: 0;
         padding: 0;
     }
@@ -453,17 +459,18 @@
         padding: 10px;
         margin: 5px 0 10px;
         border: 1px solid #c0c0c0;
-        background-color: #E6E6E6;
+        background-color: #ffffff;
         border-radius: 5px;
         box-shadow: darkgrey 10px 10px 10px 5px;
     }
 
     .atc-box-link {
-        margin: 0 10px 0 10px;
+        margin-bottom: 10px;
     }
 
     .images {
-        height: 120px;
+        height: 80px;
+        width: 120px;
     }
 
     .images img {
@@ -472,11 +479,11 @@
     }
 
     .image-texts {
-        padding: 5px;
+        padding: 5px 0;
         line-height: 25px;
         display: flex;
         flex-direction: column;
-        align-items: center;
+
     }
 
     .checkButton{
@@ -491,20 +498,22 @@
     /deep/ .ant-upload.ant-upload-select-picture-card {
         width: 70px;
         height: 70px;
-        margin: 10px;
+        margin: 0;
     }
 
     /deep/ .ant-upload-list-picture-card-container {
-        width: 145px;
+        width: 45%;
         height: 100px;
         border: 1px solid #000000;
-        margin: 10px;
+        display: flex;
+        margin: 0 10px 10px 0;
     }
 
     /deep/ .ant-upload-list-picture-card .ant-upload-list-item {
-        width: 145px;
+        width: 100%;
         height: 100px;
         padding: 0;
+        margin: 0;
     }
 
     /deep/ .ant-upload-list-item-uploading-text {
@@ -522,5 +531,11 @@
         font-size: 12px;
         color: #ffffff;
         background-color: rgba(0, 0, 0, 0.6);
+    }
+    /deep/ .ant-btn{
+        height: 45px;
+        background-color: #07c160;
+        border: 1px solid #07c160;
+        margin: 10px 0;
     }
 </style>
