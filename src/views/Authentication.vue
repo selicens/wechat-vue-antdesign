@@ -2,7 +2,7 @@
     <div class="authentication">
         <a-row class="atc-box">
             <a-col :span="24" v-on:click="goToBusinesslicense">
-                <a-col :span="12">
+                <a-col :span="10">
                     <div class="images">
                         <img :src="pageData.fileUrl" alt="" v-if="imgData.blImg === true">
                         <!--<img src="https://d0401.oss-cn-beijing.aliyuncs.com/zhouwei/yyzz.jpg" alt="" v-else>-->
@@ -16,7 +16,7 @@
                             <p>{{pageData.entname}}</p>
                             <p>法人：{{pageData.frname}}</p>
                             <!--<a-button type="primary" shape="circle" icon="check" size="small" style="margin-left: 85%;"/>-->
-                            <button class="checkButton" style="margin-left: 85%;"><a-icon type="check"  style="color: #ffffff;display: flex;justify-content: center;align-items: center" /></button>
+
                         </div>
                         <div v-else>
                             <p>营业执照</p>
@@ -24,11 +24,17 @@
                         </div>
                     </div>
                 </a-col>
+                <a-col :span="2">
+                    <div v-if="imgData.blText === true">
+                        <button class="checkButton" style=""><a-icon type="check"/></button>
+                    </div>
+                    <div v-else></div>
+                </a-col>
             </a-col>
         </a-row><!--营业执照验证-->
         <a-row class="atc-box">
             <a-col :span="24" v-on:click="goToId">
-                <a-col :span="12">
+                <a-col :span="10">
                     <div class="images">
                         <img :src="pageData.frontImage" alt="" v-if="imgData.idImg === true">
                         <!--<img src="https://d0401.oss-cn-beijing.aliyuncs.com/zhouwei/idcn.jpg" alt="" v-else>-->
@@ -42,13 +48,19 @@
                             <p>{{pageData.name}}</p>
                             <p>是否法人：{{pageData.isCorp}}</p>
                             <!--<a-button type="primary" shape="circle" icon="check" size="small" style="margin-left: 85%"/>-->
-                            <button class="checkButton" style="margin-left: 85%;"><a-icon type="check" style="color: #ffffff;display: flex;justify-content: center;align-items: center" /></button>
+
                         </div>
                         <div v-else>
                             <p>身份证</p>
                             <p>身份证件信息认证</p>
                         </div>
                     </div>
+                </a-col>
+                <a-col :span="2">
+                    <div v-if="imgData.idImg === true">
+                        <button class="checkButton" style=""><a-icon type="check"/></button>
+                    </div>
+                    <div v-else></div>
                 </a-col>
             </a-col>
         </a-row><!--身份证验证-->
@@ -110,6 +122,22 @@
                 </a-space>
             </a-col>
         </a-row><!--话术类文件验证-->
+        <a-row class="atc-box">
+            <a-col :span="24" class="atc-box-link">
+                <p>手机号验证</p>
+            </a-col>
+
+            <a-col :span="24">
+                <a-input-search placeholder="请输入手机号码" @search="getVerificationCode">
+                    <a-button slot="enterButton" class="atc-btn">
+                        获取验证码
+                    </a-button>
+                </a-input-search>
+            </a-col>
+            <a-col :span="10" class="atc-input">
+                <a-input placeholder="请输入验证码"/>
+            </a-col>
+        </a-row><!--手机号验证-->
         <a-row>
             <a-col :span="24">
                 <a-button type="primary" block v-on:click="submit">
@@ -429,6 +457,20 @@
                 //let getUuid = this.$route.query.uuid
                 let getOwnerId = this.$route.query.owner_id
                 this.$router.push('/link' + '?owner_id=' + getOwnerId)
+            },
+            getVerificationCode(value){
+                if(value.length > 11){
+                    this.$message.warning('手机号不正确,超出长度限制');
+                }else if (value.length < 11){
+                    this.$message.warning('手机号不正确,号码长度不足');
+                }else {
+                    let phone = /^(13[0-9]|14[0|1|4|5|6|7|9]|15[0-9]|16[2|6]|17[0|2|3|6|7|8]|18[0-9]|19[0|1|2|6|7|8|9])\d{8}$/
+                    if(!phone.test(value)){
+                        this.$message.error('手机号不正确,不是有效手机号');
+                    }else{
+                        console.log("正在请求获取验证码",value);
+                    }
+                }
             }
         },
         mounted() {
@@ -454,12 +496,17 @@
         margin: 0;
         padding: 0;
     }
-
+    i{
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center
+    }
     .atc-box {
         padding: 10px;
         margin: 5px 0 10px;
         border: 1px solid #c0c0c0;
-        background-color: #ffffff;
+        background-color: #FFFFFf;
         border-radius: 5px;
         box-shadow: darkgrey 10px 10px 10px 5px;
     }
@@ -479,7 +526,7 @@
     }
 
     .image-texts {
-        padding: 5px 0;
+
         line-height: 25px;
         display: flex;
         flex-direction: column;
@@ -490,19 +537,21 @@
         width:24px;
         height:24px;
         border-radius:50%;
-        background:#67c23a;
+        background:#07c160;
         padding:0;
-        border: 1px solid #67c23a;
+        border: 1px solid #07c160;
+        margin-top: 50px;
     }
 
     /deep/ .ant-upload.ant-upload-select-picture-card {
         width: 70px;
         height: 70px;
         margin: 0;
+        background-color: #ececec;
     }
 
     /deep/ .ant-upload-list-picture-card-container {
-        width: 45%;
+        width: 46%;
         height: 100px;
         border: 1px solid #000000;
         display: flex;
@@ -537,5 +586,15 @@
         background-color: #07c160;
         border: 1px solid #07c160;
         margin: 10px 0;
+    }
+    /deep/ .ant-btn.atc-btn{
+        height: 32px;
+        background-color: #07c160;
+        color: white;
+        border: 1px solid #07c160;
+        margin: 0;
+    }
+    .atc-input{
+        margin-top: 10px;
     }
 </style>

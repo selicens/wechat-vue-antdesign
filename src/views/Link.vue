@@ -8,11 +8,15 @@
                 <p>提示：复制链接用电脑端打开下载、打印、盖章;</p>
             </a-col>
             <a-col :span="24" style="text-align: left;" v-for="item in linkData" :key="item">
-                <a :href="item">{{item.split('/').pop()}}</a>
-                <a-button type="link" icon="copy" v-on:click="copyBtn(item)">复制链接</a-button>
+                <a-col :span="17">
+                    <a :href="item">{{item.split('/').pop()}}</a>
+                </a-col>
+                <a-col :span="7">
+                    <a-button type="link" icon="copy" v-on:click="copyBtn(item)">复制链接</a-button>
+                </a-col>
             </a-col>
             <a-col :span="24">
-                <a-button type="primary" block v-on:click="getURL">复制页面链接</a-button>
+                <a-button type="primary" block v-on:click="getURL"><p><strong>复制页面链接</strong></p></a-button>
             </a-col>
         </a-row>
 
@@ -80,5 +84,16 @@
         height: auto;
         width: 100%;
         font-size: 24px;
+    }
+    p {
+        font-size: 8vm;
+        margin: 0;
+        padding: 0;
+    }
+    /deep/ .ant-btn.ant-btn-primary{
+        height: 45px;
+        background-color: #07c160;
+        border: 1px solid #07c160;
+        margin: 10px 0;
     }
 </style>

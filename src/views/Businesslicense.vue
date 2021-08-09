@@ -99,14 +99,15 @@
         height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
     }
     header{
         margin: 20px 0;
     }
     .bl-upload{
-       border: 1px solid #ffffff;
+        border: 2px solid #ffffff;
         width: 350px;
+        padding-top: 13px;
+        margin: 30px 0 0 0;
     }
 </style>
