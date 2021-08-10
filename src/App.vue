@@ -19,6 +19,6 @@
     height: 100%;
     padding: 0;
     margin: 0;
-    background-color: #ececec;
+    background-color: #ffffff;
   }
 </style>

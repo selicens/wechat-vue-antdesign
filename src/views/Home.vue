@@ -29,8 +29,8 @@
         </div>
       </div>
       <div>
-        <a-button type="primary" round class="home-button" v-on:click="authentication">
-          <p style="font-size: 4.26667vw"><strong>开始认证</strong></p>
+        <a-button type="primary" round class="home-button" v-on:click="authentication" size="large">
+          <p><strong>开始认证</strong></p>
         </a-button>
       </div>
     </div>
@@ -108,8 +108,7 @@
   .home-button {
     width: 100%;
   }
-  /deep/ .ant-btn{
-    height: 45px;
+  /deep/ .ant-btn.home-button{
     background-color: #07c160;
     border: 1px solid #07c160;
   }

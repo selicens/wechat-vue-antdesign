@@ -1,154 +1,169 @@
 <template>
     <div class="authentication">
-        <a-row class="atc-box">
-            <a-col :span="24" v-on:click="goToBusinesslicense">
-                <a-col :span="10">
-                    <div class="images">
-                        <img :src="pageData.fileUrl" alt="" v-if="imgData.blImg === true">
-                        <!--<img src="https://d0401.oss-cn-beijing.aliyuncs.com/zhouwei/yyzz.jpg" alt="" v-else>-->
-                        <img src="../assets/yyzz.png" alt="" v-else>
-                    </div>
-                </a-col>
-                <a-col :span="12">
-                    <div class="image-texts">
+        <a-steps :current="current" style="display: none" size="small">
+            <a-step/>
+            <a-step/>
+            <a-step/>
+            <a-step/>
+            <a-step/>
+        </a-steps>
+        <div class="steps-content">
+            <a-row class="atc-box" v-if="current === 0">
+                <a-col :span="24" v-on:click="goToBusinesslicense">
+                    <a-col :span="24">
+                        <div class="images">
+                            <img :src="pageData.fileUrl" alt="" v-if="imgData.blImg === true">
+                            <img src="../assets/yyzz.png" alt="" v-else>
+                        </div>
+                    </a-col>
+                    <a-col :span="22">
+                        <div class="image-texts">
+                            <div v-if="imgData.blText === true">
+                                <p>信用代码：{{pageData.regno}}</p>
+                                <p>公司名称：{{pageData.entname}}</p>
+                                <p>公司法人：{{pageData.frname}}</p>
+                                <p>成立日期：{{pageData.opfrom}}</p>
+                            </div>
+                            <div v-else>
+                                <p>营业执照</p>
+                                <p>营业执照信息认证</p>
+                            </div>
+                        </div>
+                    </a-col>
+                    <a-col :span="2">
                         <div v-if="imgData.blText === true">
-                            <p>{{pageData.regno}}</p>
-                            <p>{{pageData.entname}}</p>
-                            <p>法人：{{pageData.frname}}</p>
-                            <!--<a-button type="primary" shape="circle" icon="check" size="small" style="margin-left: 85%;"/>-->
-
+                            <button class="checkButton" style=""><a-icon type="check"/></button>
                         </div>
-                        <div v-else>
-                            <p>营业执照</p>
-                            <p>营业执照信息认证</p>
+                        <div v-else></div>
+                    </a-col>
+                </a-col>
+            </a-row><!--营业执照验证-->
+            <a-row class="atc-box" v-if="current === 1">
+                <a-col :span="24" v-on:click="goToId">
+                    <a-col :span="24">
+                        <div class="images">
+                            <img :src="pageData.frontImage" alt="" v-if="imgData.idImg === true">
+                            <img src="../assets/sfz.png" alt="" v-else>
                         </div>
-                    </div>
-                </a-col>
-                <a-col :span="2">
-                    <div v-if="imgData.blText === true">
-                        <button class="checkButton" style=""><a-icon type="check"/></button>
-                    </div>
-                    <div v-else></div>
-                </a-col>
-            </a-col>
-        </a-row><!--营业执照验证-->
-        <a-row class="atc-box">
-            <a-col :span="24" v-on:click="goToId">
-                <a-col :span="10">
-                    <div class="images">
-                        <img :src="pageData.frontImage" alt="" v-if="imgData.idImg === true">
-                        <!--<img src="https://d0401.oss-cn-beijing.aliyuncs.com/zhouwei/idcn.jpg" alt="" v-else>-->
-                        <img src="../assets/sfz.png" alt="" v-else>
-                    </div>
-                </a-col>
-                <a-col :span="12">
-                    <div class="image-texts">
+                    </a-col>
+                    <a-col :span="22">
+                        <div class="image-texts">
+                            <div v-if="imgData.idImg === true">
+                                <p>{{pageData.idCard}}</p>
+                                <p>{{pageData.name}}</p>
+                                <p>是否法人：{{pageData.isCorp}}</p>
+                            </div>
+                            <div v-else>
+                                <p>身份证</p>
+                                <p>身份证件信息认证</p>
+                            </div>
+                        </div>
+                    </a-col>
+                    <a-col :span="2">
                         <div v-if="imgData.idImg === true">
-                            <p>{{pageData.idCard}}</p>
-                            <p>{{pageData.name}}</p>
-                            <p>是否法人：{{pageData.isCorp}}</p>
-                            <!--<a-button type="primary" shape="circle" icon="check" size="small" style="margin-left: 85%"/>-->
-
+                            <button class="checkButton" style=""><a-icon type="check"/></button>
                         </div>
-                        <div v-else>
-                            <p>身份证</p>
-                            <p>身份证件信息认证</p>
-                        </div>
-                    </div>
+                        <div v-else></div>
+                    </a-col>
                 </a-col>
-                <a-col :span="2">
-                    <div v-if="imgData.idImg === true">
-                        <button class="checkButton" style=""><a-icon type="check"/></button>
-                    </div>
-                    <div v-else></div>
+            </a-row><!--身份证验证-->
+            <a-row class="atc-box" v-if="current === 2">
+                <a-col :span="24" class="atc-box-link">
+                    <a v-on:click="goToLink">下载其他协议、文件链接</a>
                 </a-col>
-            </a-col>
-        </a-row><!--身份证验证-->
-        <a-row class="atc-box">
-            <a-col :span="24" class="atc-box-link">
-                <a v-on:click="goToLink">下载其他协议、文件链接</a>
-            </a-col>
-            <a-col :span="24">
-                <a-space>
-                    <a-upload
-                            action="#"
-                            list-type="picture-card"
-                            :file-list="fileList"
-                            @preview="handlePreview"
-                            @change="handleChange"
-                            :customRequest="upload"
-                            :remove="removeData"
-                    >
-                        <div v-if="fileList.length < 8">
-                            <a-icon type="plus"/>
-                            <div class="ant-upload-text">
+                <a-col :span="24">
+                    <a-space>
+                        <a-upload
+                                action="#"
+                                list-type="picture-card"
+                                :file-list="fileList"
+                                @preview="handlePreview"
+                                @change="handleChange"
+                                :customRequest="upload"
+                                :remove="removeData"
+                        >
+                            <div v-if="fileList.length < 8">
+                                <a-icon type="plus"/>
+                                <div class="ant-upload-text">
+                                </div>
                             </div>
-                        </div>
-                    </a-upload>
-                    <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-                        <img alt="example" style="width: 100%" :src="previewImage"/>
-                    </a-modal>
-                </a-space>
-            </a-col>
-        </a-row><!--其他文件、协议验证-->
-        <a-row class="atc-box">
-            <a-col :span="24" class="atc-box-link">
-                <a-select default-value="请先选择所属行业，再上传话术文件" style="width: 100%" @change="selectChange">
-                    <a-select-option v-for="item in industryData" :key="item.id" :value='item.value'>
-                        {{item.text}}
-                    </a-select-option>
-                </a-select>
-            </a-col>
-            <a-col :span="24">
-                <a-space>
-                    <a-upload
-                            action="#"
-                            list-type="picture-card"
-                            :file-list="wordList"
-                            @preview="handlePreviews"
-                            @change="handleChanges"
-                            :customRequest="upWord"
-                            :remove="removeWord"
-                    >
-                        <div v-if="fileList.length < 8">
-                            <a-icon type="plus"/>
-                            <div class="ant-upload-text">
+                        </a-upload>
+                        <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+                            <img alt="example" style="width: 100%" :src="previewImage"/>
+                        </a-modal>
+                    </a-space>
+                </a-col>
+            </a-row><!--其他文件、协议验证-->
+            <a-row class="atc-box" v-if="current === 3">
+                <a-col :span="24" class="atc-box-link">
+                    <a-select default-value="请先选择所属行业，再上传话术文件" style="width: 100%" @change="selectChange">
+                        <a-select-option v-for="item in industryData" :key="item.id" :value='item.value'>
+                            {{item.text}}
+                        </a-select-option>
+                    </a-select>
+                </a-col>
+                <a-col :span="24">
+                    <a-space>
+                        <a-upload
+                                action="#"
+                                list-type="picture-card"
+                                :file-list="wordList"
+                                @preview="handlePreviews"
+                                @change="handleChanges"
+                                :customRequest="upWord"
+                                :remove="removeWord"
+                        >
+                            <div v-if="fileList.length < 8">
+                                <a-icon type="plus"/>
+                                <div class="ant-upload-text">
+                                </div>
                             </div>
-                        </div>
-                    </a-upload>
-                    <a-modal :visible="previewVisibles" :footer="null" @cancel="handleCancel">
-                        <img alt="example" style="width: 100%" :src="previewImages"/>
-                    </a-modal>
-                </a-space>
-            </a-col>
-        </a-row><!--话术类文件验证-->
-        <a-row class="atc-box">
-            <a-col :span="24" class="atc-box-link">
-                <p>手机号验证</p>
-            </a-col>
+                        </a-upload>
+                        <a-modal :visible="previewVisibles" :footer="null" @cancel="handleCancel">
+                            <img alt="example" style="width: 100%" :src="previewImages"/>
+                        </a-modal>
+                    </a-space>
+                </a-col>
+            </a-row><!--话术类文件验证-->
+            <div v-if="current === 4">
+                <a-row class="atc-box">
+                    <a-col :span="24" class="atc-box-link">
+                        <p>手机号验证</p>
+                    </a-col>
 
-            <a-col :span="24">
-                <a-input-search placeholder="请输入手机号码" @search="getVerificationCode">
-                    <a-button slot="enterButton" class="atc-btn">
-                        获取验证码
-                    </a-button>
-                </a-input-search>
-            </a-col>
-            <a-col :span="10" class="atc-input">
-                <a-input placeholder="请输入验证码"/>
-            </a-col>
-        </a-row><!--手机号验证-->
-        <a-row>
-            <a-col :span="24">
-                <a-button type="primary" block v-on:click="submit">
-                    <p><strong>提交审核</strong></p>
-                </a-button>
-            </a-col>
-        </a-row><!--提交审核-->
+                    <a-col :span="24">
+                        <a-input-search placeholder="请输入手机号码" @search="getVerificationCode" size="large">
+                            <a-button slot="enterButton" class="atc-btn" size="large">
+                                获取验证码
+                            </a-button>
+                        </a-input-search>
+                    </a-col>
+                    <a-col :span="10" class="atc-input">
+                        <a-input placeholder="请输入验证码" size="large"/>
+                    </a-col>
+                </a-row><!--手机号验证-->
+            </div>
+
+        </div>
+        <div class="steps-action">
+            <a-button v-if="current > 0"  @click="prev" size="large" class="steps-btn">
+                <strong>上一页</strong>
+            </a-button>
+
+            <a-button v-if="current < steps.length - 1" style="margin-left: 8px" type="primary" @click="next" size="large" class="steps-btn">
+                <strong>下一页</strong>
+            </a-button>
+
+
+            <a-button v-if="current == steps.length - 1" style="margin-left: 8px" type="primary" @click="submit" size="large" class="atc-btn">
+                <strong>提交</strong>
+            </a-button>
+        </div>
     </div>
 </template>
 
 <script>
+
     function getBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -160,6 +175,9 @@
 
     export default {
         name: "Authentication",
+        components: {
+
+        },
         data() {
             return {
                 previewVisible: false,
@@ -197,7 +215,25 @@
                 wordList: [],
                 valueData: '',/*选择的选项*/
                 industryData: [],/*下拉列表选项数据*/
-                dataList:[]
+                dataList:[],
+                current: 0,
+                steps: [
+                    {
+                        title: '1'
+                    },
+                    {
+                        title: '2'
+                    },
+                    {
+                        title: '3'
+                    },
+                    {
+                        title: '4'
+                    },
+                    {
+                        title: '5'
+                    }
+                ],
             };
         },
         methods: {
@@ -471,7 +507,13 @@
                         console.log("正在请求获取验证码",value);
                     }
                 }
-            }
+            },
+            next() {
+                this.current++;
+            },
+            prev() {
+                this.current--;
+            },
         },
         mounted() {
             this.getPageData()
@@ -503,8 +545,8 @@
         align-items: center
     }
     .atc-box {
-        padding: 10px;
-        margin: 5px 0 10px;
+        padding: 40px 10px;
+        margin: 40px 0;
         border: 1px solid #c0c0c0;
         background-color: #FFFFFf;
         border-radius: 5px;
@@ -516,8 +558,9 @@
     }
 
     .images {
-        height: 80px;
-        width: 120px;
+        height: 200px;
+        width: 333px;
+        border: 1px solid #c0c0c0;
     }
 
     .images img {
@@ -526,7 +569,7 @@
     }
 
     .image-texts {
-
+        margin-top: 20px;
         line-height: 25px;
         display: flex;
         flex-direction: column;
@@ -540,7 +583,7 @@
         background:#07c160;
         padding:0;
         border: 1px solid #07c160;
-        margin-top: 50px;
+        margin-top: 90px;
     }
 
     /deep/ .ant-upload.ant-upload-select-picture-card {
@@ -581,18 +624,15 @@
         color: #ffffff;
         background-color: rgba(0, 0, 0, 0.6);
     }
-    /deep/ .ant-btn{
-        height: 45px;
+    /*/deep/ .ant-btn.steps-btn{
         background-color: #07c160;
         border: 1px solid #07c160;
         margin: 10px 0;
-    }
+    }*/
     /deep/ .ant-btn.atc-btn{
-        height: 32px;
         background-color: #07c160;
         color: white;
         border: 1px solid #07c160;
-        margin: 0;
     }
     .atc-input{
         margin-top: 10px;
