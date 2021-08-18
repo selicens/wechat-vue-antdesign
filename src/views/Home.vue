@@ -1,35 +1,37 @@
 <template>
-  <div class="home">
-    <div class="home-box">
-      <div class="home-box-top" style="margin-top: 20px;text-align: center">
+  <div class="textCenter space">
+    <div>
+      <div class="space">
         <h1>为了保证您的信息安全</h1>
         <h2>请进行安全识别验证</h2>
       </div>
-      <div class="home-box-bottom">
-        <div class="home-box-bottom-center">
+      <div>
+        <div class="flexCenter left space">
           <a-icon type="user" />
-          <div>
+          <div class="margin-left">
             <p>确保本人操作</p>
             <p>非本人操作将无法通过认证</p>
           </div>
         </div>
-        <div class="home-box-bottom-center">
+        <div class="flexCenter left space">
           <a-icon type="profile" />
-          <div>
+          <div class="margin-left">
             <p>需提供营业执照</p>
             <p>执照保持清晰无遮挡</p>
           </div>
         </div>
-        <div class="home-box-bottom-center">
+        <div class="flexCenter left space">
           <a-icon type="idcard" />
-          <div>
+          <div class="margin-left">
             <p>需提供身份证件</p>
             <p>与营业执照法人同人最佳</p>
           </div>
         </div>
       </div>
-      <div>
-        <a-button type="primary" round class="home-button" v-on:click="authentication" size="large">
+    </div>
+    <div class="fixed">
+      <div style="margin: 0 40px">
+        <a-button type="primary" round block v-on:click="start" size="large" class="button">
           <p><strong>开始认证</strong></p>
         </a-button>
       </div>
@@ -39,76 +41,40 @@
 <script>
   export default {
     name: 'Home',
-    data(){
-      return{
-        URL:''
-      }
-    },
     methods: {
-      authentication() {
-        window.location.href = this.hrefUrl+this.URL;
-      },
-      getTeannID(){
-        let url = this.$route.query.teannid
-        this.URL = url
-        console.log(url)
+      start(){
+        const teannid = this.$route.query.teannid
+        window.location.href = this.hrefUrl+'?ownerId='+teannid
       }
-    },
-    mounted(){
-      this.getTeannID()
     }
   }
 </script>
 <style scoped>
-  .home {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    /*align-items: center;*/
-    background-color: white;
-
+  .left{
+    text-align: left;
   }
-
-  p, strong {
-    font-size: 8vm;
-    line-height: 20vm;
+  .space{
+    margin: 30px 0;
+    border: 1px solid #ffffff;
+    height: 100%;
+  }
+  .margin-left{
+    margin-left: 20px;
+    width: 180px;
+  }
+  i{
+    font-size: 50px;
+  }
+  i,p{
     margin: 0;
     padding: 0;
   }
-
-  i {
-    font-size: 35px;
+  .fixed{
+    position: fixed;
+    bottom: 100px;
+    width: 100%
   }
-
-  .home-box {
-    width: 300px;
-    margin: 30px 0;
-  }
-
-  .home-box-top strong {
-    margin-top: 10px;
-  }
-  .home-box-bottom{
-    margin-bottom: 200px;
-  }
-  .home-box-bottom-center {
-    display: flex;
-    width: 250px;
-    border: 1px solid white;
-    text-align: left;
-    margin: 25px auto;
-    padding: 0 5px;
-  }
-
-  .home-box-bottom-center div {
-    margin-left: 20px;
-  }
-
-  .home-button {
-    width: 100%;
-  }
-  /deep/ .ant-btn.home-button{
+  /deep/ .ant-btn.button{
     background-color: #07c160;
     border: 1px solid #07c160;
   }

@@ -1,34 +1,39 @@
 <template>
-    <div class="Businesslicense">
-        <header>营业执照</header>
-        <ul>
-            <li>请保持营业执照清晰无遮挡、无反光</li>
-            <li>上传的文件只用作身份验证，不作他用</li>
-        </ul>
-        <div class="bl-upload">
-            <a-upload
-                    action="#"
-                    list-type="picture-card"
-                    :file-list="fileList"
-                    @preview="handlePreview"
-                    @change="handleChange"
-                    :customRequest = "upload"
-            >
-                <div v-if="fileList.length < 8">
-                    <a-icon type="plus" />
-                    <div class="ant-upload-text">
-                        点击上传营业执照图片
-                    </div>
+    <div class="border">
+        <a-row class="cardBox">
+            <a-col :span="24">
+                <h1>营业执照认证</h1>
+                <ul>
+                    <li>请保持营业执照清晰无遮挡、无反光</li>
+                    <li>上传的文件只用作身份验证，不作他用</li>
+                </ul>
+                <div class="bl-upload">
+                    <a-upload
+                            action="#"
+                            list-type="picture-card"
+                            :file-list="fileList"
+                            @preview="handlePreview"
+                            @change="handleChange"
+                            :customRequest = "upload"
+                    >
+                        <div v-if="fileList.length < 8">
+                            <a-icon type="plus" />
+                            <div class="ant-upload-text">
+                                点击上传营业执照图片
+                            </div>
+                        </div>
+                    </a-upload>
+                    <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+                        <img alt="example" style="width: 100%" :src="previewImage"/>
+                    </a-modal>
                 </div>
-            </a-upload>
-            <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-                <img alt="example" style="width: 100%" :src="previewImage"/>
-            </a-modal>
-        </div>
+            </a-col>
+        </a-row>
     </div>
 </template>
 
 <script>
+    import {uploadBasicBiz} from "../utils/http"
     function getBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -60,54 +65,40 @@
             handleChange({ fileList }) {
                 this.fileList = fileList;
             },
-            upload(f){
-                let getUuid = this.$route.query.uuid
-                let getOwnerId = this.$route.query.owner_id
+            upload(f) {
                 let formData = new FormData()
                 formData.append('file', f.file)
-                this.$axios.post(this.api+getOwnerId+'/'+getUuid+'/uploadBasicBiz',formData)
-                    .then(res=>{
+                let uuid = this.$route.query.uuid
+                let owner_id = this.$route.query.owner_id
+                formData.append('ownerId',owner_id)
+                formData.append('openId',uuid)
+                uploadBasicBiz(formData)
+                    .then(res => {
                         console.log(res)
-                        if (res.data.code === 200){
-                            this.$message.success(res.data.message);
-                        }else if (res.data.code === 500){
-                            this.$message.error(res.data.message);
-                        }else {
-                            this.$message.warning(res.data.message);
-                        }if (this.$message.success){
-                            console.log('成功了')
-                            this.$router.push('/authentication'+'?owner_id='+getOwnerId+'&'+'uuid='+getUuid)
+                        if (res.code === 200) {
+                            this.$message.success(res.message);
+                            setTimeout(() => {
+                                this.$router.push({path:'/authentication',query: {owner_id:this.$route.query.ownerId,uuid:this.$route.query.uuid}})
+                            }, 1000);
+                        } else if (res.code === 500) {
+                            this.$message.error(res.message);
+                        } else {
+                            this.$message.warning(res.message);
                         }
                     })
-                    .catch(err=>{
+                    .catch(err => {
                         console.log(err)
                     })
             }
         },
         mounted(){
-            let getUuid = this.$route.query.uuid
-            let getOwnerId = this.$route.query.owner_id
-            console.log(getUuid,getOwnerId)
+
         }
     }
 </script>
 
 <style scoped>
-    .Businesslicense{
-        background-color: #ececec;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    header{
-        margin: 20px 0;
-    }
-    .bl-upload{
-        border: 2px solid #ffffff;
-        width: 350px;
-        padding-top: 13px;
-        margin: 30px 0 0 0;
+    /deep/ .ant-row.cardBox{
+        height: 450px;
     }
 </style>

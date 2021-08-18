@@ -1,13 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Authentication from "@/views/Authentication"
-import Businesslicense from "@/views/Businesslicense"
-import Link from "@/views/Link";
-
+import Authentication from "../views/Authentication";
+import Businesslicense from "../views/Businesslicense";
+import Link from "../views/Link";
 Vue.use(VueRouter)
 
 const routes = [
+  /*{
+    path: '/',
+    redirect:'/home'
+  },*/
   {
     path: '/',
     name: 'Home',
@@ -15,14 +18,6 @@ const routes = [
     meta:{
       title:'实名信息采集'
     }
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
     path: '/authentication',
@@ -37,7 +32,7 @@ const routes = [
     name: 'Businesslicense',
     component: Businesslicense,
     meta:{
-      title:'营业执照认证'
+      title:'实名信息采集'
     }
   },
   {
@@ -45,7 +40,7 @@ const routes = [
     name: 'Link',
     component: Link,
     meta:{
-      title:'下载'
+      title:'实名信息采集'
     }
   }
 ]
