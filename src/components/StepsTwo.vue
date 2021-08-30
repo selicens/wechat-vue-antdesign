@@ -34,6 +34,7 @@
 </template>
 
 <script>
+    import Vue from "vue"
     export default {
         name: "StepsTwo",
         data(){
@@ -43,21 +44,16 @@
                     idCard:'',
                     isCorp:'',
                     name:''
-                },
-                uuid:'',
-                ownerId:''
+                }
             }
         },
         methods:{
-            value(result,uuid,ownerId) {
+            value(result) {
                 this.page = result
-                this.uuid = uuid
-                this.ownerId = ownerId
-                console.log('two:',uuid,ownerId);
             },
             goToID(){
                 console.log("DO");
-                window.location.href = this.hrefUrl2+'?ownerId='+this.ownerId+'&openId='+this.uuid
+                window.location.href = this.hrefUrl2+'?ownerId='+Vue.ls.get('teannId')+'&openId='+Vue.ls.get('uuid')
             }
         }
     }

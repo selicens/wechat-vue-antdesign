@@ -45,7 +45,7 @@ const routes = [
     }
   },
   {
-    path: '/share',
+    path: '/share/:id',
     name: 'Share',
     component: Share,
     meta:{

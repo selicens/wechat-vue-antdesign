@@ -34,6 +34,7 @@
 
 <script>
     import {uploadBasicBiz} from "../utils/http"
+    import Vue from "vue"
     function getBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -68,17 +69,15 @@
             upload(f) {
                 let formData = new FormData()
                 formData.append('file', f.file)
-                let uuid = this.$route.query.uuid
-                let owner_id = this.$route.query.owner_id
-                formData.append('ownerId',owner_id)
-                formData.append('openId',uuid)
+                formData.append('ownerId',Vue.ls.get('teannId'))
+                formData.append('openId',Vue.ls.get('uuid'))
                 uploadBasicBiz(formData)
                     .then(res => {
                         console.log(res)
                         if (res.code === 200) {
                             this.$message.success(res.message);
                             setTimeout(() => {
-                                this.$router.push({path:'/authentication',query: {owner_id:this.$route.query.ownerId,uuid:this.$route.query.uuid}})
+                                this.$router.push({path:'/authentication',query: {owner_id:Vue.ls.get('teannId'),uuid:Vue.ls.get('uuid')}})
                             }, 1000);
                         } else if (res.code === 500) {
                             this.$message.error(res.message);

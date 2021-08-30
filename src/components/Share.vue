@@ -62,7 +62,7 @@
         <a-col :span="24" v-else>
             <a-result status="403" title="403" sub-title="抱歉！链接已过期，联系重新获取">
                 <template #extra>
-                    <a-button type="primary" v-on:click="closePage">
+                    <a-button type="primary" v-on:click="closePage" class="submit">
                         关闭页面
                     </a-button>
                 </template>
@@ -73,6 +73,8 @@
 
 <script>
     import {shareData} from "../utils/http";
+    import {copyUrl} from "../utils/copyUrl";
+
     export default {
         name: "Share",
         data(){
@@ -82,14 +84,7 @@
         },
         methods:{
             shareUrl(){
-                let url = window.location.href
-                console.log(url);
-                let input = document.createElement("input");   // 直接构建input
-                input.value = url;  // 设置内容
-                document.body.appendChild(input);    // 添加临时实例
-                input.select();   // 选择实例内容
-                document.execCommand("Copy");   // 执行复制
-                document.body.removeChild(input); // 删除临时实例
+                copyUrl()
                 this.$message.success('当前页面链接已复制')
             },
             closePage(){
@@ -98,7 +93,8 @@
             }
         },
         mounted(){
-            let value = this.$route.query.dataId
+            let url = window.location.href.split('/')
+            let value = url.slice(-1)[0]
             shareData({dataId:value})
                 .then(res=>{
                     console.log(res);
@@ -111,6 +107,10 @@
                 .catch(err=>{
                     console.log(err);
                 })
+        },
+        created(){
+            let url = window.location.href.split('/')
+            console.log(url.slice(-1));
         }
     }
 </script>

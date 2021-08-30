@@ -34,6 +34,7 @@
 
 <script>
     import {uploadFile} from "../utils/http"
+    import Vue from "vue"
     function getBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -50,14 +51,11 @@
                 previewImage: '',
                 fileList: [],
                 imgArray:[],
-                owner_id:'',
-                uuid:'',
             }
         },
         methods:{
             handleCancel() {
                 this.previewVisible = false;
-                this.previewVisibles = false;
             },
             async handlePreview(file) {
                 if (!file.url && !file.preview) {
@@ -78,8 +76,8 @@
                 const {file} = files
                 let formData = new FormData()
                 formData.append('file', file)
-                formData.append('ownerId',this.owner_id)
-                formData.append('openId',this.uuid)
+                formData.append('ownerId',Vue.ls.get('teannId'))
+                formData.append('openId',Vue.ls.get('uuid'))
                 uploadFile(formData)
                     .then(res => {
                         console.log(res)
@@ -103,16 +101,7 @@
                 this.imgArray.splice(file.uid)
                 console.log('此时的fileList：',this.fileList,this.imgArray)
             },
-            value(result,uuid,ownerId) {
-                this.page(result);
-                this.uuid = uuid;
-                this.owner_id = ownerId
-                console.log('three:', uuid, ownerId);
-            },
-            goToLink(){
-                this.$router.push({path:'/link',query:{owner_id:this.owner_id}})
-            },
-            page(result){
+            value(result) {
                 if (result.fileArray !== null){
                     if (result.fileArray.length == 0) {
                         console.log('空的')
@@ -134,9 +123,10 @@
                         console.log('回显后：' + JSON.stringify(this.fileList))
                     }
                 }
+            },
+            goToLink(){
+                this.$router.push({path:'/link',query:{owner_id:Vue.ls.get('teannId')}})
             }
-        },
-        mounted(){
         }
     }
 </script>

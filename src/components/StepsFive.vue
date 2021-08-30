@@ -28,7 +28,7 @@
 
 <script>
   import {getCode,uploadCode} from "../utils/http";
-
+  import Vue from "vue"
   export default {
   name: 'StepsFive',
   data(){
@@ -97,30 +97,22 @@
           let formData = new FormData
           formData.append('captcha',value)
           formData.append('mobile',this.phone)
-          formData.append('openId',this.uuid)
-          formData.append('ownerId',this.owner_id)
+          formData.append('openId',Vue.ls.get('uuid'))
+          formData.append('ownerId',Vue.ls.get('teannId'))
           uploadCode(formData)
-                  .then(res=>{
-                    console.log(res);
-                    this.$message.success(res.message)
-                    this.$emit('success',res)
-                  })
-                  .catch(err=>{
-                    console.log(err);
-                    this.$message.error(err)
-                  })
+            .then(res=>{
+              console.log(res);
+              this.$message.success(res.message)
+              this.$emit('success',res)
+            })
+            .catch(err=>{
+              console.log(err);
+              this.$message.error(err)
+            })
         }
       }
-    },
-    value(result,uuid,ownerId){
-      this.uuid = uuid
-      this.owner_id = ownerId
-      console.log("five:" , result, uuid, ownerId);
     }
-  },
-    mounted(){
-
-    }
+  }
 }
 </script>
 

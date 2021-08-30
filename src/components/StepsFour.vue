@@ -37,6 +37,7 @@
 
 <script>
     import {dictionaries,uploadSayTemplateFile,removeTemplate} from "../utils/http"
+    import Vue from "vue"
     function getBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -50,13 +51,10 @@
         data(){
             return{
                 industryData:'',
-                wordList:'',
                 previewVisible: false,
                 previewImage: '',
                 fileList:[],
-                valueData:'',
-                uuid:'',
-                owner_id:''
+                valueData:''
             }
         },
         methods: {
@@ -92,15 +90,15 @@
             handleChange({file, fileList}) {
                 console.log(file)
                 console.log(fileList)
-                this.wordList = fileList
+                this.fileList = fileList
             },
             upload(f) {
                 /*话术类图片上传*/
                 let arr = new FormData
                 arr.append('file', f.file)
                 arr.append('industry', this.valueData)
-                arr.append('ownerId',this.owner_id)
-                arr.append('openId',this.uuid)
+                arr.append('ownerId',Vue.ls.get('teannId'))
+                arr.append('openId',Vue.ls.get('uuid'))
                 if (this.valueData === '') {
                     this.$message.error('请先选择所属行业')
                     this.$router.go(0)
@@ -130,8 +128,8 @@
                 console.log('点击了' + JSON.stringify(file))
                 let formData = new FormData
                 formData.append('name', file.name)
-                formData.append('ownerId',this.owner_id)
-                formData.append('openId',this.uuid)
+                formData.append('ownerId',Vue.ls.get('teannId'))
+                formData.append('openId',Vue.ls.get('uuid'))
                 removeTemplate(formData)
                     .then(res => {
                         console.log(res)
@@ -140,13 +138,7 @@
                         console.log(err)
                     })
             },
-            value(result,uuid,ownerId){
-                this.page(result)
-                this.uuid = uuid;
-                this.owner_id = ownerId
-                console.log("four:", uuid, ownerId);
-            },
-            page(result) {
+            value(result){
                 if (result.sayTemplateList !== null){
                     if (result.sayTemplateList.length == 0) {
                         console.log('空的')

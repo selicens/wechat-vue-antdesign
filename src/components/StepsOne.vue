@@ -35,6 +35,7 @@
 </template>
 
 <script>
+    import Vue from "vue"
     export default {
         name: "StepsOne",
         data(){
@@ -45,22 +46,18 @@
                     entname:'',
                     frname:'',
                     opfrom:''
-                },
-                uuid:'',
-                ownerId:''
+                }
             }
         },
         methods:{
-            value(result,uuid,ownerId) {
+            value(result) {
                 this.page = result
-                this.uuid = uuid
-                this.ownerId = ownerId
-                console.log('one:',uuid,ownerId);
             },
             goToBusinesslicense(){
-                console.log('go:',this.ownerId,this.uuid)
-                this.$router.push({path:'/businesslicense',query: {owner_id:this.ownerId,uuid:this.uuid}})
+                this.$router.push({name:'Businesslicense',params: {owner_id:Vue.ls.get('teannId'),uuid:Vue.ls.get('uuid')}})
             }
+        },
+        mounted(){
         }
     }
 </script>

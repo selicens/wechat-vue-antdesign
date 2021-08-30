@@ -64,27 +64,14 @@
                pageData({ownerId:owner_id, openId:uuid})
                 .then(res=>{
                     console.log(res);
-                    this.$refs.stepsOne.value(res.result,this.uuid,this.owner_id)
-                    this.$refs.stepsTwo.value(res.result,this.uuid,this.owner_id)
-                    this.$refs.stepsThree.value(res.result,this.uuid,this.owner_id)
-                    this.$refs.stepsFour.value(res.result,this.uuid,this.owner_id)
-                    this.$refs.stepsFive.value(res.result,this.uuid,this.owner_id)
+                    this.$refs.stepsOne.value(res.result)
+                    this.$refs.stepsTwo.value(res.result)
+                    this.$refs.stepsThree.value(res.result)
+                    this.$refs.stepsFour.value(res.result)
                     if (res.result.mobile){
                         this.index++;
                         this.current = this.steps[this.index]
                     }
-                    /*if(res.result.fileUrl){
-                        this.index++;
-                        this.current = this.steps[this.index]
-                    }
-                    if(res.result.frontImage){
-                        this.index++;
-                        this.current = this.steps[this.index]
-                    }
-                    if (res.result.fileArray){
-                        this.index++;
-                        this.current = this.steps[this.index]
-                    }*/
                 })
                 .catch(err=>{
                     console.log(err);
@@ -123,15 +110,15 @@
                 * 其他文件、协议类提交审核
                 */
                 let list = new FormData
-                list.append('picArray',this.threeArray)
-                list.append('ownerId',this.owner_id)
-                list.append('openId',this.uuid)
                 console.log('submit前：' + JSON.stringify(this.threeArray))
                 let formData = new FormData;
                 formData.append('openId',Vue.ls.get('uuid'))
                 formData.append('ownerId',Vue.ls.get('teannId'))
                 console.log(Vue.ls.get('uuid'),Vue.ls.get('teannId'))
                 if(this.threeArray.length == 0){
+                    list.append('picArray',this.threeArrayTwo)
+                    list.append('ownerId',Vue.ls.get('teannId'))
+                    list.append('openId',Vue.ls.get('uuid'))
                     submit(list)
                         .then(res => {
                             console.log(res)
@@ -141,7 +128,7 @@
                                     .then(res=>{
                                         console.log(res);
                                         if (res.code == 200){
-                                            this.$router.push({path:'/share',query: {dataId:res.result}})
+                                            this.$router.push({path:'/share/'+res.result})
                                         }
                                     })
                                     .catch(err=>{
@@ -155,6 +142,9 @@
                             console.log(err)
                         })
                 }else {
+                    list.append('picArray',this.threeArray)
+                    list.append('ownerId',Vue.ls.get('teannId'))
+                    list.append('openId',Vue.ls.get('uuid'))
                     submit(list)
                         .then(res => {
                             console.log(res)
@@ -164,7 +154,7 @@
                                     .then(res=>{
                                         console.log(res);
                                         if (res.code == 200){
-                                            this.$router.push({path:'/share',query: {dataId:res.result}})
+                                            this.$router.push({path:'/share/'+res.result})
                                         }
                                     })
                                     .catch(err=>{
@@ -181,13 +171,10 @@
             },
         },
         mounted(){
-            this.fromData()
-            this.getPageData()
             let uuid = this.$route.query.uuid
             Vue.ls.set('uuid',uuid)
-            this.uuid = Vue.ls.get('uuid')
-            this.owner_id = Vue.ls.get('teannId')
-            console.log(this.uuid,this.owner_id)
+            this.fromData()
+            this.getPageData()
         },
     }
 </script>
