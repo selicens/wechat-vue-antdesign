@@ -39,14 +39,35 @@
   </div>
 </template>
 <script>
+  import Vue from "vue"
+  import {fromData} from '../utils/http'
   export default {
     name: 'Home',
+    data(){
+      return{
+        value:''
+      }
+    },
     methods: {
       start(){
-        const teannid = this.$route.query.teannid
-        window.location.href = this.hrefUrl+'?ownerId='+teannid
+          const teannid = this.$route.query.teannid
+          const fromid = this.$route.query.fromId
+          fromData({ownerId:teannid,fromId:fromid})
+            .then(res=>{
+              console.log(res);
+              if(res.code == 200){
+                this.value = res
+                Vue.ls.set('fromData',res.result)
+                Vue.ls.set('teannId',teannid)
+                window.location.href = this.hrefUrl+'?ownerId='+teannid
+              }
+            })
+            .catch(err=>{
+              console.log(err);
+              this.$message.error(err)
+            })
       }
-    }
+    },
   }
 </script>
 <style scoped>
@@ -54,7 +75,7 @@
     text-align: left;
   }
   .space{
-    margin: 30px 0;
+    padding-top: 30px;
     border: 1px solid #ffffff;
     height: 100%;
   }

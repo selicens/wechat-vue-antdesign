@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Authentication from "../views/Authentication";
 import Businesslicense from "../views/Businesslicense";
 import Link from "../views/Link";
+import Share from "../components/Share";
 Vue.use(VueRouter)
 
 const routes = [
@@ -39,6 +40,14 @@ const routes = [
     path: '/link',
     name: 'Link',
     component: Link,
+    meta:{
+      title:'实名信息采集'
+    }
+  },
+  {
+    path: '/share',
+    name: 'Share',
+    component: Share,
     meta:{
       title:'实名信息采集'
     }

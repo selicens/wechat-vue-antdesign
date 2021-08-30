@@ -1,30 +1,26 @@
 <template>
     <div class="border" style="height: 100%;">
-        <a-steps :current="current" style="display: none" size="small">
-            <a-step/>
-            <a-step/>
-            <a-step/>
-            <a-step/>
-            <a-step/>
+        <a-steps :index="index" style="display: none" size="small">
+            <a-step v-for="item in steps" :key="item" :title="item" />
         </a-steps>
         <div class="steps-content">
-            <steps-five ref="stepsFive" v-show="current === 0" @success="goNext"></steps-five>
-            <steps-one ref="stepsOne" v-show="current === 1"></steps-one>
-            <steps-two ref="stepsTwo" v-show="current === 2"></steps-two>
-            <steps-three ref="stepsThree" v-show="current === 3" @threeIMG="threeImgData" @threeImgTwo="threeImgTwo"></steps-three>
-            <steps-four ref="stepsFour" v-show="current === 4"></steps-four>
+            <steps-five ref="stepsFive" v-show="current == '手机号码'" @success="goNext"></steps-five>
+            <steps-one ref="stepsOne" v-show="current == '营业执照'"></steps-one>
+            <steps-two ref="stepsTwo" v-show="current == '人脸核身'"></steps-two>
+            <steps-three ref="stepsThree" v-show="current == '协议授权'" @threeIMG="threeImgData" @threeImgTwo="threeImgTwo"></steps-three>
+            <steps-four ref="stepsFour" v-show="current == '行业话术'"></steps-four>
+
         </div>
         <div class="steps-action">
-            <a-button v-if="current > 0"  @click="prev" size="large">
-                <strong>上一页</strong>
+            <a-button v-if="index > 0"  @click="prev" size="large" class="submit" style="border-right: 2px solid white">
+                <strong>上一步</strong>
             </a-button>
 
-            <a-button v-if="current < steps.length - 1" style="margin-left: 8px" type="primary" @click="next" size="large">
-                <strong>下一页</strong>
+            <a-button v-if="index < steps.length - 1" style="border-left: 2px solid white" type="primary" @click="next" size="large" class="submit">
+                <strong>下一步</strong>
             </a-button>
 
-
-            <a-button v-if="current == steps.length - 1" style="margin-left: 8px" type="primary" @click="submits" size="large" class="submit">
+            <a-button v-if="index == steps.length - 1" style="border-left: 2px solid white" type="primary" @click="submits" size="large" class="submit">
                 <strong>提交</strong>
             </a-button>
         </div>
@@ -33,7 +29,8 @@
 </template>
 
 <script>
-    import {pageData,submit} from "../utils/http"
+    import Vue from "vue"
+    import {pageData, shareLink, submit} from "../utils/http"
     import StepsOne from "../components/StepsOne";
     import StepsTwo from "../components/StepsTwo";
     import StepsThree from "../components/StepsThree";
@@ -50,28 +47,21 @@
         },
         data() {
             return {
-                current: 0,
-                steps: [
-                    {title: '1'},
-                    {title: '2'},
-                    {title: '3'},
-                    {title: '4'},
-                    {title: '5'}
-                ],
+                index:0,
+                current: "",
+                steps: [],
                 owner_id:'',
                 uuid:'',
                 threeArray:'',
-                threeArrayTwo:''
+                threeArrayTwo:'',
+                fromId:''
             }
         },
         methods: {
             getPageData(){
-               let owner_id = this.$route.query.owner_id ;
-               let uuid = this.$route.query.uuid
-               pageData({
-                   ownerId:owner_id,
-                   openId:uuid
-               })
+               let owner_id = Vue.ls.get('teannId');
+               let uuid = Vue.ls.get('uuid')
+               pageData({ownerId:owner_id, openId:uuid})
                 .then(res=>{
                     console.log(res);
                     this.$refs.stepsOne.value(res.result,this.uuid,this.owner_id)
@@ -79,21 +69,46 @@
                     this.$refs.stepsThree.value(res.result,this.uuid,this.owner_id)
                     this.$refs.stepsFour.value(res.result,this.uuid,this.owner_id)
                     this.$refs.stepsFive.value(res.result,this.uuid,this.owner_id)
+                    if (res.result.mobile){
+                        this.index++;
+                        this.current = this.steps[this.index]
+                    }
+                    /*if(res.result.fileUrl){
+                        this.index++;
+                        this.current = this.steps[this.index]
+                    }
+                    if(res.result.frontImage){
+                        this.index++;
+                        this.current = this.steps[this.index]
+                    }
+                    if (res.result.fileArray){
+                        this.index++;
+                        this.current = this.steps[this.index]
+                    }*/
                 })
                 .catch(err=>{
                     console.log(err);
                 })
             },
+            fromData(){
+                console.log(Vue.ls.get('fromData'));
+                this.steps = JSON.parse(Vue.ls.get('fromData'))
+                console.log(this.steps);
+                this.current = this.steps[0]
+            },
             next() {
-                this.current++;
+                this.index++;
+                this.current = this.steps[this.index]
             },
             prev() {
-                this.current--;
+                this.index--;
+                this.current = this.steps[this.index]
             },
             goNext(data){
                 console.log(data);
-                if (data.message == '验证通过'){
-                    this.current++
+                if (data.code == 200){
+                    this.index++;
+                    this.current = this.steps[this.index]
                 }
             },
             threeImgData(data){
@@ -107,38 +122,56 @@
                 /*
                 * 其他文件、协议类提交审核
                 */
+                let list = new FormData
+                list.append('picArray',this.threeArray)
+                list.append('ownerId',this.owner_id)
+                list.append('openId',this.uuid)
                 console.log('submit前：' + JSON.stringify(this.threeArray))
+                let formData = new FormData;
+                formData.append('openId',Vue.ls.get('uuid'))
+                formData.append('ownerId',Vue.ls.get('teannId'))
+                console.log(Vue.ls.get('uuid'),Vue.ls.get('teannId'))
                 if(this.threeArray.length == 0){
-                    let list = new FormData
-                    list.append('picArray',this.threeArrayTwo)
-                    list.append('ownerId',this.owner_id)
-                    list.append('openId',this.uuid)
                     submit(list)
                         .then(res => {
                             console.log(res)
-                            if (res.data.code === 200) {
-                                this.$router.go(0)
-                                this.$message.success(res.data.message)
+                            if (res.code === 200) {
+                                this.$message.success(res.message)
+                                shareLink(formData)
+                                    .then(res=>{
+                                        console.log(res);
+                                        if (res.code == 200){
+                                            this.$router.push({path:'/share',query: {dataId:res.result}})
+                                        }
+                                    })
+                                    .catch(err=>{
+                                        console.log(err);
+                                    })
                             }else {
-                                this.$message.error(res.data.message)
+                                this.$message.error(res.message)
                             }
                         })
                         .catch(err => {
                             console.log(err)
                         })
                 }else {
-                    let list = new FormData
-                    list.append('picArray',this.threeArray)
-                    list.append('ownerId',this.owner_id)
-                    list.append('openId',this.uuid)
-                    submit(this.uuid,this.owner_id,list)
+                    submit(list)
                         .then(res => {
                             console.log(res)
-                            if (res.data.code === 200) {
-                                this.$router.go(0)
-                                this.$message.success(res.data.message)
+                            if (res.code === 200) {
+                                this.$message.success(res.message)
+                                shareLink(formData)
+                                    .then(res=>{
+                                        console.log(res);
+                                        if (res.code == 200){
+                                            this.$router.push({path:'/share',query: {dataId:res.result}})
+                                        }
+                                    })
+                                    .catch(err=>{
+                                        console.log(err);
+                                    })
                             }else {
-                                this.$message.error(res.data.message)
+                                this.$message.error(res.message)
                             }
                         })
                         .catch(err => {
@@ -148,9 +181,13 @@
             },
         },
         mounted(){
+            this.fromData()
             this.getPageData()
-            this.uuid = this.$route.query.uuid
-            this.owner_id = this.$route.query.owner_id
+            let uuid = this.$route.query.uuid
+            Vue.ls.set('uuid',uuid)
+            this.uuid = Vue.ls.get('uuid')
+            this.owner_id = Vue.ls.get('teannId')
+            console.log(this.uuid,this.owner_id)
         },
     }
 </script>
@@ -160,5 +197,7 @@
         background-color: #07c160;
         color: white;
         border: 1px solid #07c160;
+        width: 50%;
+        height: 50px;
     }
 </style>

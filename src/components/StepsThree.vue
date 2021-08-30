@@ -2,6 +2,10 @@
     <div>
         <a-row class="cardBox">
             <a-col :span="24" class="title">
+                <h1>协议授权</h1>
+                <span>请点击下方链接前往协议、文件下载页面，下载后填写、拍照、盖章并上传图片</span>
+            </a-col>
+            <a-col :span="24" class="title">
                 <a v-on:click="goToLink">下载其他协议、文件链接</a>
             </a-col>
             <a-col :span="24">
@@ -139,6 +143,6 @@
 
 <style scoped>
     /deep/ .ant-row.cardBox{
-        height: 450px;
+        height: 80vh;
     }
 </style>

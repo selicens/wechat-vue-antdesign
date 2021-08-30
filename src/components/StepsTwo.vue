@@ -1,6 +1,10 @@
 <template>
     <div>
         <a-row class="cardBox">
+            <a-col :span="24" class="title">
+                <h1>人脸核身</h1>
+                <span>点击前往人脸核身认证页面，请准备好身份证原件</span>
+            </a-col>
             <a-col :span="24" v-if="page !== null" v-on:click="goToID">
                 <a-row type="flex" align="bottom">
                     <a-col :span="24" class="images">
@@ -9,7 +13,7 @@
                     <a-col :span="22" class="texts">
                         <p>身份证号：{{page.idCard}}</p>
                         <p>证件姓名：{{page.name}}</p>
-                        <p>是否法人：{{page.isCorp}}</p>
+                        <p>是否法人：{{page.isCorp == 1 ? '是' : '否'}}</p>
                     </a-col>
                     <a-col :span="2">
                         <button class="checkButton"><a-icon type="check"/></button>
@@ -53,7 +57,7 @@
             },
             goToID(){
                 console.log("DO");
-                window.location.href = this.hrefUrl2+this.ownerId+'/'+this.uuid
+                window.location.href = this.hrefUrl2+'?ownerId='+this.ownerId+'&openId='+this.uuid
             }
         }
     }
@@ -61,6 +65,6 @@
 
 <style scoped>
     /deep/ .ant-row.cardBox{
-        height: 450px;
+        height: 80vh;
     }
 </style>

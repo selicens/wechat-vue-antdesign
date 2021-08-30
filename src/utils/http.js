@@ -1,8 +1,12 @@
 import instance from "./request";
-//import {baseUrl} from "./api"
-/*let ownerId = window.location.hash.split('?')[1].split('=')[1].split('&')[0];
-let uuid = window.location.hash.split('=')[2]
-let rightUrl = ownerId+'/'+uuid*/
+
+export function fromData(params) {
+    return instance({
+        url:'/fromConfig',
+        method:'get',
+        params
+    })
+}
 
 export function pageData(params) { /*获取页面数据*/
     return instance({
@@ -80,5 +84,20 @@ export function uploadCode(data) {
         url:'/checkSMSCode',
         method:'post',
         data
+    })
+}
+export function shareLink(data) {
+    return instance({
+        url:'/shareLink',
+        method:'post',
+        data
+    })
+}
+
+export function shareData(params) {
+    return instance({
+        url:'/shareData',
+        method:'get',
+        params
     })
 }

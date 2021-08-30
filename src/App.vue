@@ -14,7 +14,7 @@
 </script>
 
 <style>
-  #app{
+  html,body,#app{
     width: 100%;
     height: 100%;
     padding: 0;
@@ -31,13 +31,9 @@
   }
   .cardBox{
     padding: 50px 10px;
-    margin: 40px 0;
-    border: 1px solid #c0c0c0;
     background-color: #FFFFFf;
     border-radius: 5px;
-    box-shadow: darkgrey 10px 10px 10px 5px;
     width: 100%;
-    height: 200px;
   }
   .images {
     height: 200px;
@@ -70,4 +66,5 @@
   a {
     text-decoration: underline;
   }
+
 </style>

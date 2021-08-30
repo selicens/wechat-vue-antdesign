@@ -60,7 +60,7 @@
 
 <style scoped>
     /deep/ .ant-row.cardBox{
-        height: 450px;
+        height: 80vh;
     }
 
 </style>

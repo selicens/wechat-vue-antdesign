@@ -4,18 +4,19 @@
       <a-col :span="24">
         <a-col :span="24" class="title">
           <h2>手机号验证</h2>
+          <span>请输入正确手机号并点击获取验证码，手机短信将收到验证码，验证码提交正确即可验证通过</span>
         </a-col>
 
         <a-col :span="24" class="title">
           <a-input-search placeholder="请输入手机号码" @search="getVerificationCode" size="large">
             <a-button slot="enterButton" size="large">
-              <strong>获取验证码</strong>
+              <strong>{{countdown ? countdown+'秒后获取' : '获取验证码'}}</strong>
             </a-button>
           </a-input-search>
         </a-col>
         <a-col :span="24" class="atc-input">
           <a-input-search placeholder="请输入验证码" @search="submitCode" size="large">
-            <a-button slot="enterButton" class="submit" size="large">
+            <a-button slot="enterButton" size="large">
               <strong>提交验证码</strong>
             </a-button>
           </a-input-search>
@@ -34,7 +35,9 @@
     return{
       phone:'',
       uuid:'',
-      owner_id:''
+      owner_id:'',
+      countdown:'',
+      time:60
     }
   },
   methods:{
@@ -49,19 +52,33 @@
           this.$message.error('手机号不正确,不是有效手机号');
         }else{
           console.log("正在请求获取验证码",value);
-          this.phone = value
-          let formData = new FormData
-          formData.append('mobile',value)
-          getCode(formData)
-            .then(res=>{
-              console.log(res);
-              if(res.message == '验证码10分钟内，仍然有效！'){
-                this.$message.success(res.message)
-              }
-            })
-            .catch(err=>{
-              console.log(err);
-            })
+          if(!this.countdown){
+            this.phone = value
+            let formData = new FormData
+            formData.append('mobile',value)
+            getCode(formData)
+              .then(res=>{
+                console.log(res);
+                if(res.message == '操作成功！'){
+                  let time = setInterval( ()=>{
+                    this.time --
+                    this.countdown = this.time
+                    if(this.time == 0){
+                      clearInterval(time)
+                      this.countdown = false
+                    }
+                    console.log(this.time)
+                  },1000)
+                }else if(res.message == '验证码10分钟内，仍然有效！'){
+                  this.$message.success(res.message)
+                }
+              })
+              .catch(err=>{
+                console.log(err);
+              })
+          }else {
+            this.$message.warning('请勿重复提交请求')
+          }
         }
       }
     },
@@ -100,18 +117,16 @@
       this.owner_id = ownerId
       console.log("five:" , result, uuid, ownerId);
     }
-  }
+  },
+    mounted(){
+
+    }
 }
 </script>
 
 
 <style scoped>
-  /deep/ .ant-btn.submit{
-    background-color: #07c160;
-    color: white;
-    border: 1px solid #07c160;
-  }
   /deep/ .ant-row.cardBox{
-    height: 450px;
+    height: 80vh;
   }
 </style>

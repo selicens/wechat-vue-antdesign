@@ -2,6 +2,10 @@
     <div>
         <a-row class="cardBox">
             <a-col :span="24" class="title">
+                <h1>行业话术</h1>
+                <span>请先选择所属行业，再上传话术文件图片</span>
+            </a-col>
+            <a-col :span="24" class="title">
                 <a-select placeholder="请先选择所属行业，再上传话术文件" style="width: 100%;" @change="selectChange">
                     <a-select-option v-for="item in industryData" :key="item.id" :value='item.value'>
                         {{item.text}}
@@ -172,9 +176,9 @@
 
 <style scoped>
     /deep/ .ant-row.cardBox{
-        height: 450px;
+        height: 80vh;
     }
-    /deep/.ant-upload-list-picture .ant-upload-list-item {
+    /deep/ .ant-upload-list-picture .ant-upload-list-item {
         padding: 0;
     }
     /deep/.ant-upload-list-picture-card .ant-upload-list-item{

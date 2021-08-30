@@ -1,6 +1,10 @@
 <template>
     <div>
         <a-row class="cardBox">
+            <a-col :span="24" class="title">
+                <h1>营业执照</h1>
+                <span>点击前往营业执照认证页面，请准备营业执照原件或副本</span>
+            </a-col>
             <a-col :span="24" v-if="page !== null" v-on:click="goToBusinesslicense">
                 <a-row type="flex" align="bottom">
                     <a-col :span="24" class="images">
@@ -63,6 +67,6 @@
 
 <style scoped>
     /deep/ .ant-row.cardBox{
-        height: 450px;
+        height: 80vh;
     }
 </style>

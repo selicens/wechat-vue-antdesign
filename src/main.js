@@ -1,14 +1,20 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import axios from 'axios'
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 import baseUrl from "./utils/api";
+import storage from "vue-ls";
+
+let options = {
+  namespace:'vuejs__',
+  name:'ls',
+  storage:'local'
+}
 
 Vue.config.productionTip = false
 Vue.use(Antd)
-Vue.prototype.$axios = axios;
+Vue.use(storage,options)
 Vue.prototype.hrefUrl = baseUrl.weChatLogin;
 Vue.prototype.hrefUrl2 = baseUrl.faceNucleus;
 router.beforeEach((to,from,next) =>{
