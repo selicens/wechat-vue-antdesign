@@ -79,8 +79,6 @@
                             setTimeout(() => {
                                 this.$router.push({path:'/authentication',query: {owner_id:Vue.ls.get('teannId'),uuid:Vue.ls.get('uuid')}})
                             }, 1000);
-                        } else if (res.code === 500) {
-                            this.$message.error(res.message);
                         } else {
                             this.$message.warning(res.message);
                         }
@@ -89,9 +87,6 @@
                         console.log(err)
                     })
             }
-        },
-        mounted(){
-
         }
     }
 </script>

@@ -107,10 +107,6 @@
                 .catch(err=>{
                     console.log(err);
                 })
-        },
-        created(){
-            let url = window.location.href.split('/')
-            console.log(url.slice(-1));
         }
     }
 </script>

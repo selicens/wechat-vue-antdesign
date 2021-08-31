@@ -84,8 +84,8 @@
                 if (!file.url && !file.preview) {
                     file.preview = await getBase64(file.originFileObj);
                 }
-                this.previewImages = file.url || file.preview;
-                this.previewVisibles = true;
+                this.previewImage = file.url || file.preview;
+                this.previewVisible = true;
             },
             handleChange({file, fileList}) {
                 console.log(file)
@@ -101,7 +101,6 @@
                 arr.append('openId',Vue.ls.get('uuid'))
                 if (this.valueData === '') {
                     this.$message.error('请先选择所属行业')
-                    this.$router.go(0)
                 } else {
                     uploadSayTemplateFile(arr)
                         .then(res => {
@@ -109,16 +108,13 @@
                             if (res.code === 200) {
                                 this.$message.success(res.message)
                                 f.onSuccess()
-                                /*this.$router.go(0)*/
                                 //自定义上传成功后要调用onSuccess(),不然就会一直保持上传中状态，无法显示图片的缩略图
-                            } else if (res.code === 500) {
-                                console.log(res.message)
-                                this.$message.error(res.message)
-                                this.$router.go(0)
+                            } else{
+                                this.$message.warning(res.message)
                             }
                         })
                         .catch(err => {
-                            console.log(err)
+                            this.$message.error(err)
                         })
                 }
             },
@@ -140,23 +136,21 @@
             },
             value(result){
                 if (result.sayTemplateList !== null){
-                    if (result.sayTemplateList.length == 0) {
-                        console.log('空的')
-                    } else {
-                        console.log('回显前：' + JSON.stringify(this.fileList))
-                        let data = result.sayTemplateList
-                        console.log('字符串转为数组后：' + JSON.stringify(data))
-                        this.fileList = data.map((item, index) => {
-                            return {
-                                uid: index,
-                                name: item.name,
-                                status: 'done',
-                                response: '第' + index + '张图片',
-                                url: item.fileUrl,
-                            }
-                        })
-                        console.log('回显后：' + JSON.stringify(this.fileList))
-                    }
+                    console.log('回显前：' + JSON.stringify(this.fileList))
+                    let data = result.sayTemplateList
+                    console.log('字符串转为数组后：' + JSON.stringify(data))
+                    this.fileList = data.map((item, index) => {
+                        return {
+                            uid: index,
+                            name: item.name,
+                            status: 'done',
+                            response: '第' + index + '张图片',
+                            url: item.fileUrl,
+                        }
+                    })
+                    console.log('回显后：' + JSON.stringify(this.fileList))
+                }else {
+                    console.log('空的')
                 }
             }
         },

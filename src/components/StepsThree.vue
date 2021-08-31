@@ -103,25 +103,23 @@
             },
             value(result) {
                 if (result.fileArray !== null){
-                    if (result.fileArray.length == 0) {
-                        console.log('空的')
-                    } else {
-                        console.log('回显前：' + JSON.stringify(this.fileList))
-                        let data = result.fileArray
-                        let dataList = data.split(",")
-                        this.$emit('threeImgTwo',dataList)
-                        console.log('字符串转为数组后：' + JSON.stringify(dataList))
-                        this.fileList = dataList.map((item, index) => {
-                            return {
-                                uid: index,
-                                name: index + '.png',
-                                status: 'done',
-                                response: '第' + index + '张图片',
-                                url: item,
-                            }
-                        })
-                        console.log('回显后：' + JSON.stringify(this.fileList))
-                    }
+                    console.log('回显前：' + JSON.stringify(this.fileList))
+                    let data = result.fileArray
+                    let dataList = data.split(",")
+                    this.$emit('threeImgTwo',dataList)
+                    console.log('字符串转为数组后：' + JSON.stringify(dataList))
+                    this.fileList = dataList.map((item, index) => {
+                        return {
+                            uid: index,
+                            name: index + '.png',
+                            status: 'done',
+                            response: '第' + index + '张图片',
+                            url: item,
+                        }
+                    })
+                    console.log('回显后：' + JSON.stringify(this.fileList))
+                }else {
+                    console.log('空的')
                 }
             },
             goToLink(){

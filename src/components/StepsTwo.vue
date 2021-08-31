@@ -52,7 +52,6 @@
                 this.page = result
             },
             goToID(){
-                console.log("DO");
                 window.location.href = this.hrefUrl2+'?ownerId='+Vue.ls.get('teannId')+'&openId='+Vue.ls.get('uuid')
             }
         }
