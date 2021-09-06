@@ -8,7 +8,7 @@
         </a-col>
 
         <a-col :span="24" class="title">
-          <a-input-search placeholder="请输入手机号码" @search="getVerificationCode" size="large">
+          <a-input-search placeholder="请输入手机号码" :value="returnValue" @search="getVerificationCode" size="large">
             <a-button slot="enterButton" size="large">
               <strong>{{countdown ? countdown+'秒后获取' : '获取验证码'}}</strong>
             </a-button>
@@ -37,7 +37,8 @@
       uuid:'',
       owner_id:'',
       countdown:'',
-      time:60
+      time:60,
+      returnValue:''
     }
   },
   methods:{
@@ -110,6 +111,12 @@
               this.$message.error(err)
             })
         }
+      }
+    },
+    value(result){
+      if (result.mobile){
+        this.returnValue = result.mobile
+        console.log(result.mobile)
       }
     }
   }

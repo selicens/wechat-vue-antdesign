@@ -80,6 +80,7 @@
                                this.$refs.stepsTwo.value(res.result)
                                this.$refs.stepsThree.value(res.result)
                                this.$refs.stepsFour.value(res.result)
+                               this.$refs.stepsFive.value(res.result)
                                if (res.result.mobile){
                                    this.index++;
                                    this.current = this.steps[this.index]
