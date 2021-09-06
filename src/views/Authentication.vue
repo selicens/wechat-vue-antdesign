@@ -12,15 +12,15 @@
                 <steps-four ref="stepsFour" v-show="current == '行业话术'"></steps-four>
             </div>
             <div class="steps-action">
-                <a-button v-if="index > 0"  @click="prev" size="large" class="submit" style="border-right: 2px solid white">
+                <a-button v-if="index > 0"  @click="prev" size="large" class="submit btn-sub-right" ref="pre">
                     <strong>上一步</strong>
                 </a-button>
 
-                <a-button v-if="index < steps.length - 1" style="border-left: 2px solid white" type="primary" @click="next" size="large" class="submit">
+                <a-button v-if="index < steps.length - 1" type="primary" @click="next" size="large" :class="[index > 0 ? 'submit btn-sub-left' : 'submit btn-sub-is']" ref="nex">
                     <strong>下一步</strong>
                 </a-button>
 
-                <a-button v-if="index == steps.length - 1" style="border-left: 2px solid white" type="primary" @click="submits" size="large" class="submit">
+                <a-button v-if="index == steps.length - 1" type="primary" @click="submits" size="large" class="submit btn-sub-left">
                     <strong>提交</strong>
                 </a-button>
             </div>
@@ -62,7 +62,8 @@
                 steps: [],
                 threeArray:'',
                 threeArrayTwo:'',
-                page:true
+                page:true,
+                pageValue:''
             }
         },
         methods: {
@@ -74,6 +75,7 @@
                        .then(res=>{
                            console.log(res);
                            if (res.code == 200){
+                               this.pageValue = res.result
                                this.$refs.stepsOne.value(res.result)
                                this.$refs.stepsTwo.value(res.result)
                                this.$refs.stepsThree.value(res.result)
@@ -103,8 +105,44 @@
                 }
             },
             next() {
-                this.index++;
-                this.current = this.steps[this.index]
+                /**/
+                console.log(this.current);
+                if (this.current == '手机号码'){
+                    if (this.pageValue.mobile){
+                        this.index++;
+                        this.current = this.steps[this.index]
+                    }else {
+                        this.$message.warning('手机验证通过方可执行下一步')
+                    }
+                }else if (this.current == '营业执照'){
+                    if(this.pageValue.fileUrl){
+                        this.index++;
+                        this.current = this.steps[this.index]
+                    }else {
+                        this.$message.warning('验证通过方可执行下一步')
+                    }
+                }else if (this.current == '人脸核身'){
+                    if(this.pageValue.frontImage){
+                        this.index++;
+                        this.current = this.steps[this.index]
+                    }else {
+                        this.$message.warning('验证通过方可执行下一步')
+                    }
+                }else if (this.current == '协议授权'){
+                    if(this.pageValue.fileArray){
+                        this.index++;
+                        this.current = this.steps[this.index]
+                    }else {
+                        this.$message.warning('验证通过方可执行下一步')
+                    }
+                }else if (this.current == '行业话术'){
+                    if(this.pageValue.sayTemplateList){
+                        this.index++;
+                        this.current = this.steps[this.index]
+                    }else {
+                        this.$message.warning('验证通过方可执行下一步')
+                    }
+                }
             },
             prev() {
                 this.index--;
@@ -212,5 +250,14 @@
     }
     a{
         text-decoration: none;
+    }
+    /deep/ .ant-btn.btn-sub-right{
+        border-right: 2px solid white
+    }
+    /deep/ .ant-btn.btn-sub-left{
+        border-left: 2px solid white
+    }
+    /deep/ .ant-btn.btn-sub-is{
+        margin-left: 50%;
     }
 </style>

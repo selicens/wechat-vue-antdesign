@@ -1,42 +1,50 @@
 <template>
-    <div class="textCenter space">
-        <div>
-            <div class="space">
+    <a-row class="textCenter space">
+        <a-col :span="24">
+            <a-col :span="24" class="space">
                 <h1>为了保证您的信息安全</h1>
                 <h2>请进行安全识别验证</h2>
-            </div>
-            <div>
-                <div class="flexCenter left space">
-                    <a-icon type="user"/>
-                    <div class="margin-left">
+            </a-col>
+            <a-col :span="24">
+                <a-row class="flexCenter left space" type="flex" justify="center">
+                    <a-col :xs="4" :sm="4" :md="3" :lg="2" :xl="1">
+                        <a-icon type="user"/>
+                    </a-col>
+                    <a-col :xs="12" :sm="8" :md="6" :lg="5" :xl="3">
                         <p>确保本人操作</p>
                         <p>非本人操作将无法通过认证</p>
-                    </div>
-                </div>
-                <div class="flexCenter left space">
-                    <a-icon type="profile"/>
-                    <div class="margin-left">
+                    </a-col>
+                </a-row>
+                <a-row class="flexCenter left space" type="flex" justify="center">
+                    <a-col :xs="4" :sm="4" :md="3" :lg="2" :xl="1">
+                        <a-icon type="profile"/>
+                    </a-col>
+                    <a-col :xs="12" :sm="8" :md="6" :lg="5" :xl="3">
                         <p>需提供营业执照</p>
                         <p>执照保持清晰无遮挡</p>
-                    </div>
-                </div>
-                <div class="flexCenter left space">
-                    <a-icon type="idcard"/>
-                    <div class="margin-left">
+                    </a-col>
+                </a-row>
+                <a-row class="flexCenter left space" type="flex" justify="center">
+                    <a-col :xs="4" :sm="4" :md="3" :lg="2" :xl="1">
+                        <a-icon type="idcard"/>
+                    </a-col>
+                    <a-col :xs="12" :sm="8" :md="6" :lg="5" :xl="3">
                         <p>需提供身份证件</p>
                         <p>与营业执照法人同人最佳</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </a-col>
+                </a-row>
+            </a-col>
+        </a-col>
         <div class="fixed">
-            <div style="margin: 0 40px">
-                <a-button type="primary" round block v-on:click="start" size="large" class="button">
-                    <span><strong>开始认证</strong></span>
-                </a-button>
-            </div>
+            <a-row type="flex" justify="center">
+                <a-col :xs="20" :sm="20" :md="15" :lg="10" :xl="8">
+                    <a-button type="primary" round block v-on:click="start" size="large" class="button">
+                        <span><strong>开始认证</strong></span>
+                    </a-button>
+                </a-col>
+            </a-row>
         </div>
-    </div>
+    </a-row>
 </template>
 <script>
     import Vue from "vue"
@@ -71,14 +79,9 @@
     }
 
     .space {
-        padding-top: 30px;
+        padding-top: 4.5vh;
         border: 1px solid #ffffff;
         height: 100%;
-    }
-
-    .margin-left {
-        margin-left: 20px;
-        width: 180px;
     }
 
     i {
@@ -92,8 +95,8 @@
 
     .fixed {
         position: fixed;
-        bottom: 100px;
-        width: 100%
+        bottom: 15vh;
+        width: 100%;
     }
 
     /deep/ .ant-btn.button {

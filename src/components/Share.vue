@@ -1,33 +1,46 @@
 <template>
     <a-row class="shareBox">
         <a-col :span="24" v-if="shareValue">
-            <a-col :span="24" class="textCenter" style="margin-top: 10px">
-                <a-button size="large" type="primary" class="submit" v-on:click="shareUrl" ><strong>分享页面</strong></a-button>
-            </a-col>
-            <a-col :span="24">
+            <a-row type="flex" justify="center">
+                <a-col :xs="24" :sm="20" :md="15" :lg="10" :xl="8">
+                    <a-button size="large" type="primary" class="submit" block v-on:click="shareUrl" ><strong>分享页面</strong></a-button>
+                </a-col>
                 <a-col :span="24" class="textCenter title" style="margin-top: 10px">
                     <span>此页面链接半小时内有效！</span>
+                    <a-statistic-countdown
+                            :value="Date.now() + 1000 * 60 * 60 * 0 + 1000 * 60 * 30"
+                            valueStyle="color:#c0c0c0;font-size:10px"
+                            @finish="onFinish"
+                    />
                 </a-col>
+            </a-row>
+            <a-col :span="24">
                 <a-divider>个人信息</a-divider>
-                <a-col :span="5" :offset="1">
-                    <a-avatar :size="54" :src="shareValue.avatar" />
-                </a-col>
-                <a-col :span="18" class="avatar">
-                    <span>微信：{{shareValue.username}}</span><br/>
-                    <span>手机：{{shareValue.mobile}}</span>
-                </a-col>
+                <a-row type="flex" justify="center">
+                    <a-col :xs="5" :sm="5" :md="4" :lg="3" :xl="2">
+                        <a-avatar :size="54" :src="shareValue.avatar" />
+                    </a-col>
+                    <a-col :xs="15" :sm="15" :md="11" :lg="7" :xl="6" class="avatar">
+                        <span>微信：{{shareValue.username}}</span><br/>
+                        <span>手机：{{shareValue.mobile}}</span>
+                    </a-col>
+                </a-row>
             </a-col>
             <a-col :span="24">
                 <a-divider>营业执照</a-divider>
-                <a-col :span="24" class="shareImg">
-                    <img :src="shareValue.fileUrl+'?x-oss-process=style/hy'" alt="">
-                </a-col>
-                <a-col class="text">
-                    <span>信用代码：{{shareValue.regno}}</span><br/>
-                    <span>公司名称：{{shareValue.entname}}</span><br/>
-                    <span>公司法人：{{shareValue.frname}}</span><br/>
-                    <span>存续时间：{{shareValue.opfrom}} - 至今</span>
-                </a-col>
+                <a-row type="flex" justify="center">
+                    <a-col :xs="20" :sm="20" :md="15" :lg="10" :xl="8" class="shareImg">
+                        <img :src="shareValue.fileUrl+'?x-oss-process=style/hy'" alt="">
+                    </a-col>
+                </a-row>
+                <a-row type="flex" justify="center">
+                    <a-col :xs="20" :sm="20" :md="15" :lg="10" :xl="8" class="text">
+                        <span>信用代码：{{shareValue.regno}}</span><br/>
+                        <span>公司名称：{{shareValue.entname}}</span><br/>
+                        <span>公司法人：{{shareValue.frname}}</span><br/>
+                        <span>存续时间：{{shareValue.opfrom}} - 至今</span>
+                    </a-col>
+                </a-row>
                 <a-col :span="24" class="textCenter">
                     <span>与权威数据库比对，
                         <strong :class="[shareValue.status == '通过' ? 'isCorp1' : 'isCorp2']">
@@ -38,18 +51,23 @@
             </a-col>
             <a-col :span="24">
                 <a-divider>人脸核身</a-divider>
-                <a-col :span="24" class="shareImg">
-                    <img :src="shareValue.frontImage+'?x-oss-process=style/hy'" alt="">
-                </a-col>
-                <a-col class="text">
-                    <span>身份证号：{{shareValue.idCard}}</span><br/>
-                    <span>证件姓名：{{shareValue.name}}</span><br/>
-                    <span>是否法人：
-                        <span :class="[shareValue.isCorp == 0 ? 'isCorp2' : 'isCorp1']">
-                        {{shareValue.isCorp == 0 ? '非法人' : '是法人'}}
+                <a-row type="flex" justify="center">
+                    <a-col :xs="20" :sm="20" :md="15" :lg="10" :xl="8" class="shareImg">
+                        <img :src="shareValue.frontImage+'?x-oss-process=style/hy'" alt="">
+                    </a-col>
+                </a-row>
+                <a-row type="flex" justify="center">
+                    <a-col :xs="20" :sm="20" :md="15" :lg="10" :xl="8" class="text">
+                        <span>身份证号：{{shareValue.idCard}}</span><br/>
+                        <span>证件姓名：{{shareValue.name}}</span><br/>
+                        <span>是否法人：
+                            <span v-if="!shareValue.isCorp"></span>
+                            <span v-else :class="[shareValue.isCorp == 0 ? 'isCorp2' : 'isCorp1']">
+                            {{shareValue.isCorp == 0 ? '非法人' : '是法人'}}
+                            </span>
                         </span>
-                    </span>
-                </a-col>
+                    </a-col>
+                </a-row>
                 <a-col :span="24" class="textCenter">
                     <span>与权威数据库比对，
                         <strong :class="[shareValue.liveStatus == 1 ? 'isCorp1' : 'isCorp2']">
@@ -90,6 +108,9 @@
             closePage(){
                 window.location.href="about:blank";
                 window.close();
+            },
+            onFinish(){
+
             }
         },
         mounted(){
@@ -127,7 +148,6 @@
         background-color: #07c160;
         color: white;
         border: 1px solid #07c160;
-        width: 100%;
         height: 50px;
     }
    .avatar p{
@@ -135,19 +155,15 @@
         margin: 0;
         line-height: 35px;
     }
-    .text{
-        margin: 10px 40px;
-    }
     .isCorp1{
         color: #07c160;
     }
     .isCorp2{
         color: #faad14;
     }
+    .text{margin-top: 10px;}
     .shareImg{
         height: auto;
-        margin: 0 0 10px 0;
-        padding: 0 40px;
     }
     .shareImg img{
         height: 100%;

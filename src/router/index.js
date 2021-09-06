@@ -21,7 +21,7 @@ const routes = [
     }
   },
   {
-    path: '/authentication',
+      path: '/authentication',
     name: 'Authentication',
     component: Authentication,
     meta:{

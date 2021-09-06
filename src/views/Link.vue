@@ -11,7 +11,11 @@
                 <a :href="item">{{item.split('/').pop()}}</a>
             </a-col>
             <a-col :span="24" class="title">
-                <a-button type="primary" block v-on:click="getURL"><strong>复制页面链接</strong></a-button>
+               <a-row type="flex" justify="center">
+                   <a-col :xs="24" :sm="20" :md="16" :lg="12" :xl="10">
+                       <a-button type="primary" block v-on:click="getURL"><strong>复制页面链接</strong></a-button>
+                   </a-col>
+               </a-row>
             </a-col>
         </a-row>
     </div>

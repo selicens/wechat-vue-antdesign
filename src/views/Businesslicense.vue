@@ -16,7 +16,7 @@
                             @change="handleChange"
                             :customRequest = "upload"
                     >
-                        <div v-if="fileList.length < 8">
+                        <div v-if="fileList.length < 1">
                             <a-icon type="plus" />
                             <div class="ant-upload-text">
                                 点击上传营业执照图片
@@ -78,7 +78,7 @@
                             this.$message.success(res.message);
                             setTimeout(() => {
                                 this.$router.push({path:'/authentication',query: {owner_id:Vue.ls.get('teannId'),uuid:Vue.ls.get('uuid')}})
-                            }, 1000);
+                            }, 500);
                         } else {
                             this.$message.warning(res.message);
                         }
