@@ -69,11 +69,11 @@
                 console.log(fileList)
                 this.fileList = fileList
             },
-            upload(files) {
+            upload(file) {
                 /*
                 * 其他文件、协议类图片上传
                 */
-                const {file} = files
+                console.log('上传1111:',file);
                 let formData = new FormData()
                 formData.append('file', file)
                 formData.append('ownerId',Vue.ls.get('teannId'))
@@ -85,7 +85,7 @@
                             this.imgArray.push(res.result)
                             console.log('上传后：' + this.imgArray)
                             this.$emit('threeIMG',this.imgArray)
-                            files.onSuccess()
+                            file.onSuccess()
                             //自定义上传成功后要调用onSuccess(),不然就会一直保持上传中状态，无法显示图片的缩略图
                         }else if (res.code === 500){
                             this.$message.error(res.message)
@@ -97,8 +97,11 @@
             },
             removeData(file){
                 console.log('删除了：',JSON.stringify(file));
-                this.fileList.splice(file.uid)
-                this.imgArray.splice(file.uid)
+                const index = this.fileList.indexOf(file);
+                const newFileList = this.fileList.slice();
+                newFileList.splice(index, 1);
+                this.imgArray = newFileList;
+                this.fileList = newFileList;
                 console.log('此时的fileList：',this.fileList,this.imgArray)
             },
             value(result) {
@@ -106,6 +109,7 @@
                     console.log('回显前：' + JSON.stringify(this.fileList))
                     let data = result.fileArray
                     let dataList = data.split(",")
+                    this.imgArray = dataList
                     this.$emit('threeImgTwo',dataList)
                     console.log('字符串转为数组后：' + JSON.stringify(dataList))
                     this.fileList = dataList.map((item, index) => {

@@ -120,7 +120,10 @@
             },
             remove(file) {
                 /*删除话术类图片调用*/
-                this.fileList.splice(file.uid)
+                const index = this.fileList.indexOf(file);
+                const newFileList = this.fileList.slice();
+                newFileList.splice(index, 1);
+                this.fileList = newFileList
                 console.log('点击了' + JSON.stringify(file))
                 let formData = new FormData
                 formData.append('name', file.name)
