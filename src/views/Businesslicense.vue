@@ -35,37 +35,11 @@
 <script>
     import {uploadBasicBiz} from "../utils/http"
     import Vue from "vue"
-    function getBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    }
+    import {uploadMixin} from "../utils/uploadMixin";
     export default {
         name: "Businesslicense",
-        data(){
-            return{
-                previewVisible: false,
-                previewImage: '',
-                fileList: [],
-            }
-        },
+        mixins:[uploadMixin],
         methods: {
-            handleCancel() {
-                this.previewVisible = false;
-            },
-            async handlePreview(file) {
-                if (!file.url && !file.preview) {
-                    file.preview = await getBase64(file.originFileObj);
-                }
-                this.previewImage = file.url || file.preview;
-                this.previewVisible = true;
-            },
-            handleChange({ fileList }) {
-                this.fileList = fileList;
-            },
             upload(f) {
                 let formData = new FormData()
                 formData.append('file', f.file)
@@ -76,9 +50,7 @@
                         console.log(res)
                         if (res.code === 200) {
                             this.$message.success(res.message);
-                            setTimeout(() => {
-                                this.$router.push({path:'/authentication',query: {owner_id:Vue.ls.get('teannId'),uuid:Vue.ls.get('uuid')}})
-                            }, 500);
+                            this.$router.push({path:'/authentication',query: {owner_id:Vue.ls.get('teannId'),uuid:Vue.ls.get('uuid')}})
                         } else {
                             this.$message.warning(res.message);
                         }

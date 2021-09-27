@@ -6,31 +6,17 @@
                 <h2>请进行安全识别验证</h2>
             </a-col>
             <a-col :span="24">
-                <a-row class="flexCenter left space" type="flex" justify="center">
+                <a-row class="flexCenter left space"
+                       type="flex" justify="center"
+                       v-for="(item,key) in describe"
+                       :key="key"
+                >
                     <a-col :xs="4" :sm="4" :md="3" :lg="2" :xl="1">
-                        <a-icon type="user"/>
+                        <a-icon :type="item.icon"/>
                     </a-col>
-                    <a-col :xs="12" :sm="8" :md="6" :lg="5" :xl="3">
-                        <p>确保本人操作</p>
-                        <p>非本人操作将无法通过认证</p>
-                    </a-col>
-                </a-row>
-                <a-row class="flexCenter left space" type="flex" justify="center">
-                    <a-col :xs="4" :sm="4" :md="3" :lg="2" :xl="1">
-                        <a-icon type="profile"/>
-                    </a-col>
-                    <a-col :xs="12" :sm="8" :md="6" :lg="5" :xl="3">
-                        <p>需提供营业执照</p>
-                        <p>执照保持清晰无遮挡</p>
-                    </a-col>
-                </a-row>
-                <a-row class="flexCenter left space" type="flex" justify="center">
-                    <a-col :xs="4" :sm="4" :md="3" :lg="2" :xl="1">
-                        <a-icon type="idcard"/>
-                    </a-col>
-                    <a-col :xs="12" :sm="8" :md="6" :lg="5" :xl="3">
-                        <p>需提供身份证件</p>
-                        <p>与营业执照法人同人最佳</p>
+                    <a-col :xs="12" :sm="10" :md="8" :lg="6" :xl="3">
+                        <p>{{item.text1}}</p>
+                        <p>{{item.text2}}</p>
                     </a-col>
                 </a-row>
             </a-col>
@@ -52,21 +38,30 @@
 
     export default {
         name: 'Home',
+        data(){
+            return{
+                describe:[
+                    {icon:'user',text1: '确保本人操作',text2:'非本人操作将无法通过认证'},
+                    {icon:'profile',text1: '需提供营业执照',text2:'执照保持清晰无遮挡'},
+                    {icon:'idcard',text1: '需提供身份证件',text2:'与营业执照法人同人最佳'}
+                    ]
+            }
+        },
         methods: {
             start() {
                 const teannid = this.$route.query.teannid
                 const fromid = this.$route.query.fromId
                 fromData({ownerId: teannid, fromId: fromid})
                     .then(res => {
-                        console.log(res);
                         if (res.code == 200) {
+                            console.log(res);
+                            this.$message.success(res.message)
                             Vue.ls.set('fromData', res.result)
                             Vue.ls.set('teannId', teannid)
                             window.location.href = this.hrefUrl + '?ownerId=' + teannid
                         }
                     })
                     .catch(err => {
-                        console.log(err);
                         this.$message.error(err)
                     })
             }

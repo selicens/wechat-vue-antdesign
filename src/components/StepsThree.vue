@@ -35,47 +35,23 @@
 <script>
     import {uploadFile} from "../utils/http"
     import Vue from "vue"
-    function getBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    }
+    import {uploadMixin} from "../utils/uploadMixin";
     export default {
         name: "StepsThree",
+        mixins:[uploadMixin],
         data(){
             return{
-                previewVisible: false,
-                previewImage: '',
-                fileList: [],
                 imgArray:[],
             }
         },
         methods:{
-            handleCancel() {
-                this.previewVisible = false;
-            },
-            async handlePreview(file) {
-                if (!file.url && !file.preview) {
-                    file.preview = await getBase64(file.originFileObj);
-                }
-                this.previewImage = file.url || file.preview;
-                this.previewVisible = true;
-            },
-            handleChange({file, fileList}) {
-                console.log(file)
-                console.log(fileList)
-                this.fileList = fileList
-            },
             upload(file) {
                 /*
                 * 其他文件、协议类图片上传
                 */
                 console.log('上传1111:',file);
                 let formData = new FormData()
-                formData.append('file', file)
+                formData.append('file', file.file)
                 formData.append('ownerId',Vue.ls.get('teannId'))
                 formData.append('openId',Vue.ls.get('uuid'))
                 uploadFile(formData)

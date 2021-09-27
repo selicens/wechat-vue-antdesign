@@ -3,7 +3,8 @@
         <a-col :span="24" v-if="shareValue">
             <a-row type="flex" justify="center">
                 <a-col :xs="24" :sm="20" :md="15" :lg="10" :xl="8">
-                    <a-button size="large" type="primary" class="submit" block v-on:click="shareUrl" ><strong>分享页面</strong></a-button>
+                    <a-button size="large" type="primary" class="submit" block v-on:click="shareUrl">
+                        <strong>分享页面</strong></a-button>
                 </a-col>
                 <a-col :span="24" class="textCenter title" style="margin-top: 10px">
                     <span>此页面链接半小时内有效！</span>
@@ -18,7 +19,7 @@
                 <a-divider>个人信息</a-divider>
                 <a-row type="flex" justify="center">
                     <a-col :xs="5" :sm="5" :md="4" :lg="3" :xl="2">
-                        <a-avatar :size="54" :src="shareValue.avatar" />
+                        <a-avatar :size="54" :src="shareValue.avatar"/>
                     </a-col>
                     <a-col :xs="15" :sm="15" :md="11" :lg="7" :xl="6" class="avatar">
                         <span>微信：{{shareValue.username}}</span><br/>
@@ -78,13 +79,7 @@
             </a-col>
         </a-col>
         <a-col :span="24" v-else>
-            <a-result status="403" title="403" sub-title="抱歉！链接已过期，联系重新获取">
-                <template #extra>
-                    <a-button type="primary" v-on:click="closePage" class="submit">
-                        关闭页面
-                    </a-button>
-                </template>
-            </a-result>
+            <PublicPage/>
         </a-col>
     </a-row>
 </template>
@@ -92,40 +87,39 @@
 <script>
     import {shareData} from "../utils/http";
     import {copyUrl} from "../utils/copyUrl";
+    import PublicPage from "./PublicPage";
 
     export default {
         name: "Share",
-        data(){
-            return{
-                shareValue:[]
+        components: {PublicPage},
+        data() {
+            return {
+                shareValue: []
             }
         },
-        methods:{
-            shareUrl(){
+        methods: {
+            shareUrl() {
                 copyUrl()
                 this.$message.success('当前页面链接已复制')
             },
-            closePage(){
-                window.location.href="about:blank";
-                window.close();
-            },
-            onFinish(){
-
+            onFinish() {
+                console.log("倒计时完毕");
+                this.shareValue = false
             }
         },
-        mounted(){
+        mounted() {
             let url = window.location.href.split('/')
             let value = url.slice(-1)[0]
-            shareData({dataId:value})
-                .then(res=>{
+            shareData({dataId: value})
+                .then(res => {
                     console.log(res);
-                    if (res.code == 200){
+                    if (res.code == 200) {
                         this.shareValue = res.result
-                    }else if (res.code == 500){
+                    } else if (res.code == 500) {
                         this.shareValue = false
                     }
                 })
-                .catch(err=>{
+                .catch(err => {
                     console.log(err);
                 })
         }
@@ -133,39 +127,50 @@
 </script>
 
 <style scoped>
-    .textCenter span{
+    .textCenter span {
         color: #c0c0c0;
         font-size: 1.5vh;
     }
-    .avatar span{
+
+    .avatar span {
         line-height: 30px;
     }
-    .shareBox{
+
+    .shareBox {
         margin: 10px;
         padding: 10px;
     }
-    /deep/ .ant-btn.submit{
+
+    /deep/ .ant-btn.submit {
         background-color: #07c160;
         color: white;
         border: 1px solid #07c160;
         height: 50px;
     }
-   .avatar p{
+
+    .avatar p {
         padding: 0;
         margin: 0;
         line-height: 35px;
     }
-    .isCorp1{
+
+    .isCorp1 {
         color: #07c160;
     }
-    .isCorp2{
+
+    .isCorp2 {
         color: #faad14;
     }
-    .text{margin-top: 10px;}
-    .shareImg{
+
+    .text {
+        margin-top: 10px;
+    }
+
+    .shareImg {
         height: auto;
     }
-    .shareImg img{
+
+    .shareImg img {
         height: 100%;
         width: 100%;
         border: 1px solid #c0c0c0;

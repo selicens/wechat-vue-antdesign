@@ -26,13 +26,7 @@
             </div>
         </a-col>
         <a-col :span="24" v-else>
-            <a-result status="403" title="403" sub-title="抱歉，你没有访问此页面的权限">
-                <template #extra>
-                    <a-button type="primary" class="submit" v-on:click="closePage">
-                        <strong>关闭页面</strong>
-                    </a-button>
-                </template>
-            </a-result>
+            <PublicPage/>
         </a-col>
     </div>
 
@@ -46,9 +40,11 @@
     import StepsThree from "../components/StepsThree";
     import StepsFour from "../components/StepsFour";
     import StepsFive from "../components/StepsFive";
+    import PublicPage from "../components/PublicPage";
     export default {
         name: "Authentication",
         components: {
+            PublicPage,
             StepsOne,
             StepsTwo,
             StepsThree,
@@ -226,10 +222,6 @@
                             console.log(err)
                         })
                 }
-            },
-            closePage(){
-                window.location.href="about:blank";
-                window.close();
             }
         },
         mounted(){
@@ -260,5 +252,7 @@
     }
     /deep/ .ant-btn.btn-sub-is{
         margin-left: 50%;
+        background-color: silver;
+        border-color: silver;
     }
 </style>
