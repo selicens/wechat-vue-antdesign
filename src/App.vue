@@ -48,15 +48,6 @@
   .texts{
     margin: 15px 0 0 0;
   }
-  .checkButton{
-    width:24px;
-    height:24px;
-    border-radius:50%;
-    background:#07c160;
-    padding:0;
-    border: 1px solid #07c160;
-    color: white;
-  }
   .title{
     margin: 0 0 10px 0;
   }

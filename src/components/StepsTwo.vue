@@ -16,7 +16,7 @@
                         <p>是否法人：{{page.isCorp == 1 ? '是' : '否'}}</p>
                     </a-col>
                     <a-col :span="2">
-                        <button class="checkButton"><a-icon type="check"/></button>
+                        <a-icon type="check-circle"/>
                     </a-col>
                 </a-row>
             </a-col>
@@ -61,5 +61,9 @@
 <style scoped>
     /deep/ .ant-row.cardBox{
         height: 80vh;
+    }
+    /deep/ .anticon{
+        color: #07c160;
+        font-size: 24px;
     }
 </style>
